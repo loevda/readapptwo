@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css?family=Faster+One');
+
+.navbar.navbar-default {
+  margin-bottom: 0px;
+  background: #2b669a;;
+  border: 0px;
+  border-radius: 0px;
+  color: whitesmoke;
+}
+
+.faster {
+  font-family: 'Faster One', cursive;
+}
+
+.navbar-default .navbar-brand, .navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:visited {
+  color: whitesmoke;
+}
+
+.fOf {
+  margin: 0px!important;
+  padding: 0px!important;
+  font-family: 'Faster One', cursive;
+}
+
+.fOfRow {
+  margin-top: 10px;
+}
+
+.fOfRow h1, .fOf h2 {
+  background: #2b669a;
+  color: whitesmoke;
+  font-size: 50px;
+  text-transform: uppercase;
+  line-height: 70px;
+  text-align: center;
+}
+
+.fOf h2 {
+    font-size: 40px;
+}
+
+
+#app-title {
+  margin-top: 26px;
+  color: #2b669a;
+}
+
+#loading-spinner {
+  margin: 40px auto 40px auto;
+}
+
+#loading-spinner:after {
+  content: 'FETCHING DATA';
+  font-size: 8px;
+}
+
+.mt20 {
+  margin-top: 20px;
+}
+
