@@ -16,3 +16,10 @@ export const getCategories = categories => ({
     type: GET_CATEGORIES,
     categories
 })
+
+export const fetchCategories = () => dispatch => (
+    PostAPI.fetchCategories()
+        .then((categories) => {
+            dispatch(getCategories(categories))
+        })
+)

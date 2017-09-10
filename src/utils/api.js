@@ -20,3 +20,10 @@ export function fetchCategoryPosts (categoryId) {
         }))
 }
 
+export function fetchCategories () {
+    return fetch(`${api}/categories`, { headers })
+        .then(res => res.json())
+        .then(data => data.categories)
+}
+
+

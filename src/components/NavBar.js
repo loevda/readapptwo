@@ -3,6 +3,7 @@
  */
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { capitalize } from '../utils/helpers'
 
 class NavBar extends React.Component {
 
@@ -38,6 +39,15 @@ class NavBar extends React.Component {
                             </div>
                         </div>
                         <hr />
+                        <div className="row">
+                            <div className="btn-group btn-group-justified" role="group" aria-label="">
+                                {this.props.categories.map((category) => (
+                                    <div key={category.name} className="btn-group" role="group">
+                                        <Link to={`/category/${category.name}`} className="btn btn-info">View posts for {capitalize(category.name)}</Link>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </section>
             </div>
