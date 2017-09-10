@@ -1,6 +1,8 @@
 /**
  * Created by david2099 on 10/09/17.
  */
+import * as PostAPI from '../utils/api'
+
 export const GET_POSTS = 'GET_POSTS'
 export const GET_POST = 'GET_POST'
 export const GET_CATEGORY_POSTS = 'GET_CATEGORY_POSTS'
