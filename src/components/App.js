@@ -13,6 +13,15 @@ class App extends Component {
             <BrowserRouter>
                 <div className="App">
                     <NavBar/>
+
+                    <Switch>
+                        <Route exact path="/" render={() => (
+                            <div className="row">
+                            </div>
+                        )} />
+                        <Route path="*" component={NotFound} />
+                    </Switch>
+
                 </div>
             </BrowserRouter>
         );
