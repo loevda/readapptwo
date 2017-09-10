@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './css/App.css';
+import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
+import logo from '../logo.svg';
+import '../css/bootstrap.min.css';
+import '../css/bootstrap-theme.min.css';
+import '../css/App.css';
+
 
 class App extends Component {
   render() {
