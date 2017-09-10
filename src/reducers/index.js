@@ -13,11 +13,27 @@ import {
     ADD_COMMENT
 } from '../actions'
 
+const intialState = {
+    posts: [],
+    categories: []
+}
 
-
-function posts (state = {}, action) {
+function posts (state = [], action) {
     switch (action.type) {
+        case GET_POSTS:
+            return action.posts
+        case GET_CATEGORY_POSTS:
+            return action.posts
         default :
+            return state
+    }
+}
+
+function post (state =  {}, action) {
+    switch (action.type) {
+        case GET_POST:
+            return action.post
+        default:
             return state
     }
 }
@@ -33,5 +49,6 @@ function categories(state = [], action) {
 
 export default combineReducers({
     posts,
+    post,
     categories
 });

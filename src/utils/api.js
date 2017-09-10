@@ -12,6 +12,20 @@ const headers = {
     'Authorization': token
 }
 
+export function fetchPost (postId) {
+    return fetch(`${api}/posts/${postId}`, { headers })
+        .then(res => res.json())
+        .then(data => data)
+}
+
+export function fetchPosts () {
+    return fetch(`${api}/posts`, { headers })
+        .then(res => res.json())
+        .then(data => data.filter((post) => {
+            return !post.deleted
+        }))
+}
+
 export function fetchCategoryPosts (categoryId) {
     return fetch(`${api}/${categoryId}/posts`, { headers })
         .then(res => res.json())

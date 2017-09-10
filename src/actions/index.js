@@ -23,3 +23,46 @@ export const fetchCategories = () => dispatch => (
             dispatch(getCategories(categories))
         })
 )
+
+export const getPosts = posts => ({
+    type: GET_POSTS,
+    posts
+})
+
+export const fetchPosts = () => dispatch => (
+    PostAPI
+        .fetchPosts()
+        .then((posts) => {
+            dispatch(getPosts(posts))
+        })
+)
+
+
+export const getPost = post => ({
+    type: GET_POST,
+    post
+})
+
+export const fetchPost = (postId) => dispatch => (
+    PostAPI
+        .fetchPost(postId)
+        .then((post) => {
+            dispatch(getPost(post))
+        })
+)
+
+export const getCategoryPosts = categoryPosts => ({
+    type: GET_CATEGORY_POSTS,
+    categoryPosts
+})
+
+export const fetchCategoryPosts = (categoryId) => dispatch => (
+    PostAPI.fetchCategoryPosts(categoryId)
+        .then((posts) => {
+            dispatch(getPosts(posts))
+        })
+)
+
+
+
+

@@ -4,6 +4,8 @@ import NavBar from './NavBar'
 import NotFound from './NotFound'
 import { connect } from 'react-redux'
 import { fetchCategories } from '../actions'
+import ListPosts from './ListPosts'
+import Post from './Post'
 import '../css/bootstrap.min.css';
 import '../css/bootstrap-theme.min.css';
 import '../css/App.css';
@@ -11,7 +13,7 @@ import '../css/App.css';
 
 class App extends Component {
 
-    componentDidMount() {
+    componentWillMount() {
         this.props.fetchCategories()
     }
 
@@ -21,10 +23,9 @@ class App extends Component {
                 <div className="App">
                     <NavBar categories={this.props.categories} />
                     <Switch>
-                        <Route exact path="/" render={() => (
-                            <div className="row">
-                            </div>
-                        )} />
+                        <Route exact path="/" component={ListPosts}/>
+                        <Route exact path="/:category/posts" component={ListPosts}/>
+                        <Route exact path="/posts/:postId" component={Post}/>
                         <Route path="*" component={NotFound} />
                     </Switch>
 
