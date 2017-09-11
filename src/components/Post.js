@@ -18,7 +18,7 @@ class Post extends React.Component {
         const { post, comments, votePost } = this.props
         return (
             <div className="container">
-                <h1>{post.title}</h1>
+                <h1 className="faster">{post.title}</h1>
                 <div className="col-md-6">
                     <div className="pull-left">Vote score: {post.voteScore}</div>
                     <div className="pull-right">Nr. comments: {comments.length}</div>
