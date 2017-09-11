@@ -18,6 +18,12 @@ export function fetchPost (postId) {
         .then(data => data)
 }
 
+export function fetchPostComments (postId) {
+    return fetch(`${api}/posts/${postId}/comments`, { headers })
+        .then(res => res.json())
+        .then(data => data)
+}
+
 export function fetchPosts () {
     return fetch(`${api}/posts`, { headers })
         .then(res => res.json())
@@ -38,6 +44,12 @@ export function fetchCategories () {
     return fetch(`${api}/categories`, { headers })
         .then(res => res.json())
         .then(data => data.categories)
+}
+
+export function votePost (postId, voteStr) {
+    return fetch(`${api}/posts/${postId}`, { headers: {...headers, 'Content-Type': 'application/json'}, method: 'POST', body: JSON.stringify({option: voteStr}) })
+        .then(res => res.json())
+        .then(data => data)
 }
 
 

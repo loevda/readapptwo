@@ -5,6 +5,7 @@ import * as PostAPI from '../utils/api'
 
 export const GET_POSTS = 'GET_POSTS'
 export const GET_POST = 'GET_POST'
+export const GET_POST_COMMENTS = 'GET_POST_COMMENTS'
 export const GET_CATEGORY_POSTS = 'GET_CATEGORY_POSTS'
 export const ADD_POST = 'ADD_POST'
 export const EDIT_POST = 'EDIT_POST'
@@ -51,6 +52,19 @@ export const fetchPost = (postId) => dispatch => (
         })
 )
 
+export const getPostComments = comments => ({
+    type: GET_POST_COMMENTS,
+    comments
+})
+
+export const fetchPostComments = (postId) => dispatch => (
+    PostAPI
+        .fetchPostComments(postId)
+        .then((comments) => {
+            dispatch(getPostComments(comments))
+        })
+)
+
 export const getCategoryPosts = categoryPosts => ({
     type: GET_CATEGORY_POSTS,
     categoryPosts
@@ -62,6 +76,21 @@ export const fetchCategoryPosts = (categoryId) => dispatch => (
             dispatch(getPosts(posts))
         })
 )
+
+export const postVote = post => ({
+    type: POST_VOTE,
+    post
+})
+
+export const votePost = (postId, voteStr) => dispatch => (
+    PostAPI.votePost(postId, voteStr)
+        .then((post) => {
+            console.log(post)
+            dispatch(postVote(post))
+        })
+)
+
+
 
 
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import NavBar from './NavBar'
 import NotFound from './NotFound'
 import { connect } from 'react-redux'

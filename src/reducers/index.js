@@ -5,6 +5,7 @@ import { combineReducers } from 'redux';
 import {
     GET_POSTS,
     GET_POST,
+    GET_POST_COMMENTS,
     GET_CATEGORY_POSTS,
     ADD_POST,
     EDIT_POST,
@@ -12,11 +13,6 @@ import {
     POST_VOTE,
     ADD_COMMENT
 } from '../actions'
-
-const intialState = {
-    posts: [],
-    categories: []
-}
 
 function posts (state = [], action) {
     switch (action.type) {
@@ -33,6 +29,17 @@ function post (state =  {}, action) {
     switch (action.type) {
         case GET_POST:
             return action.post
+        case POST_VOTE:
+            return action.post
+        default:
+            return state
+    }
+}
+
+function comments (state = [], action) {
+    switch (action.type) {
+        case GET_POST_COMMENTS:
+            return action.comments
         default:
             return state
     }
@@ -50,5 +57,6 @@ function categories(state = [], action) {
 export default combineReducers({
     posts,
     post,
+    comments,
     categories
 });
