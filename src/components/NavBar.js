@@ -31,11 +31,8 @@ class NavBar extends React.Component {
                 <section>
                     <div className="container">
                         <div className="row" id="app-title">
-                            <div className="col-md-6 col-sm-12">
+                            <div className="col-md-12 col-sm-12">
                                 <h1 className="faster">Welcome to readable-App</h1>
-                            </div>
-                            <div className="col-md-6 col-sm-12 hidden-sm">
-                                <Link to="/" className="btn btn-lg btn-default col-md-12 mt20"><span className="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> New Post</Link>
                             </div>
                         </div>
                         <hr />

@@ -47,7 +47,9 @@ export function fetchCategories () {
 }
 
 export function votePost (postId, voteStr) {
-    return fetch(`${api}/posts/${postId}`, { headers: {...headers, 'Content-Type': 'application/json'}, method: 'POST', body: JSON.stringify({option: voteStr}) })
+    return fetch(`${api}/posts/${postId}`,
+        { headers: {...headers, 'Content-Type': 'application/json'},
+            method: 'POST', body: JSON.stringify({option: voteStr}) })
         .then(res => res.json())
         .then(data => data)
 }
