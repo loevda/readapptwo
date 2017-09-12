@@ -28,20 +28,22 @@ class ListPosts extends React.Component {
 
     render() {
 
-        const { posts, votePost } = this.props
+        const { posts, votePost, sortBy } = this.props
 
         return (
             <div className="container">
                 <hr />
                 <div className="row">
                     <div className="col-md-6 col-sm-12 form-group form-group-lg">
-                        <select className="form-control col-md-12 mt20" onChange={(event) => this.handleSorting(event)}>
-                            <option> -- Order by --</option>
-                            <option value="upVote">Higher vote score</option>
-                            <option value="downVote">Lower vote score</option>
-                            <option value="latest">Latest</option>
-                            <option value="oldest">Oldest</option>
-                        </select>
+                        <div className="input-group input-group-lg  mt20">
+                            <span className="input-group-addon" id="basic-addon1">Sort by</span>
+                            <select defaultValue={sortBy} className="form-control" onChange={(event) => this.handleSorting(event)} aria-describedby="basic-addon1">
+                                <option value="upVote">Higher vote score</option>
+                                <option value="downVote">Lower vote score</option>
+                                <option value="latest">Latest</option>
+                                <option value="oldest">Oldest</option>
+                            </select>
+                        </div>
                     </div>
                     <div className="col-md-6 col-sm-12 form-group form-group-lg">
                         <Link to="/"
@@ -83,7 +85,8 @@ class ListPosts extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        posts: state.posts.posts
+        posts: state.posts.posts,
+        sortBy: state.posts.sortBy
     }
 }
 
