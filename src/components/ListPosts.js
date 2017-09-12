@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { fetchPosts, fetchCategoryPosts, votePost } from '../actions'
 import { Link } from 'react-router-dom'
 import PostActionBar from './PostActionBar'
+import PostInfo from './PostInfo'
 
 
 class ListPosts extends React.Component {
@@ -29,8 +30,8 @@ class ListPosts extends React.Component {
                 <hr />
                 <div className="row">
                     <div className="col-md-6 col-sm-12 form-group form-group-lg">
-                        <select className="form-control">
-                            <option>Order by</option>
+                        <select className="form-control col-md-12 mt20">
+                            <option> -- Order by --</option>
                             <option>Vote score</option>
                             <option>Publication date</option>
                         </select>
@@ -53,7 +54,7 @@ class ListPosts extends React.Component {
                                     {post.title}
                                 </Link>
                             </h3>
-                            <h5 className="small">Vote score: {post.voteScore}</h5>
+                            <PostInfo voteScore={post.voteScore} numComments={3} timestamp={post.timestamp} />
                             <hr />
                             <PostActionBar votePost={votePost} post={post} />
                         </div>
