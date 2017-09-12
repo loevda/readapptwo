@@ -6,12 +6,15 @@ import {
     GET_POSTS,
     GET_POST,
     GET_POST_COMMENTS,
+    GET_COMMENTS,
     GET_CATEGORY_POSTS,
     ADD_POST,
     EDIT_POST,
     GET_CATEGORIES,
     POST_VOTE,
-    ADD_COMMENT
+    ADD_COMMENT,
+    GET_POSTS_BY_UPVOTES,
+    GET_POSTS_BY_TIMESTAMP
 } from '../actions'
 
 
@@ -40,6 +43,8 @@ function post (state =  {}, action) {
 function comments (state = [], action) {
     switch (action.type) {
         case GET_POST_COMMENTS:
+            return action.comments
+        case GET_COMMENTS:
             return action.comments
         default:
             return state
