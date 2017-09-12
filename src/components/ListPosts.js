@@ -21,6 +21,7 @@ class ListPosts extends React.Component {
         category ? this.props.fetchCategoryPosts(category) : this.props.fetchPosts()
     }
 
+
     render() {
 
         const { posts, votePost } = this.props
@@ -56,7 +57,7 @@ class ListPosts extends React.Component {
                             </h3>
                             <PostInfo voteScore={post.voteScore} numComments={3} timestamp={post.timestamp} />
                             <hr />
-                            <PostActionBar votePost={votePost} post={post} />
+                            <PostActionBar votePost={votePost} post={post} next="/"/>
                         </div>
                     )) :
                     <div className="text-center">

@@ -14,6 +14,7 @@ import {
     ADD_COMMENT
 } from '../actions'
 
+
 function posts (state = [], action) {
     switch (action.type) {
         case GET_POSTS:
