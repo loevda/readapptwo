@@ -3,8 +3,8 @@
  */
 import React from 'react'
 import { connect } from 'react-redux'
-import { fetchPosts, fetchCategoryPosts, votePost } from '../actions'
-import { Link } from 'react-router-dom'
+import { fetchPosts, fetchCategoryPosts, votePost, postsOrderedBy } from '../actions'
+import { Link, withRouter } from 'react-router-dom'
 import PostActionBar from './PostActionBar'
 import PostInfo from './PostInfo'
 
@@ -13,12 +13,16 @@ class ListPosts extends React.Component {
 
     componentDidMount() {
         let category = this.props.match.params.category
-        category ? this.props.fetchCategoryPosts(category) : this.props.fetchPosts()
+        category ? this.props.fetchCategoryPosts(category, this.props.match.params.category) : this.props.fetchPosts()
     }
 
     componentDidUpdate(prevProps) {
         let category = this.props.match.params.category
-        category ? this.props.fetchCategoryPosts(category) : this.props.fetchPosts()
+        category ? this.props.fetchCategoryPosts(category, this.props.match.params.category) : this.props.fetchPosts()
+    }
+
+    handleSorting(e) {
+        this.props.postsOrderedBy(this.props.posts, e.target.value)
     }
 
 
@@ -31,10 +35,12 @@ class ListPosts extends React.Component {
                 <hr />
                 <div className="row">
                     <div className="col-md-6 col-sm-12 form-group form-group-lg">
-                        <select className="form-control col-md-12 mt20">
+                        <select className="form-control col-md-12 mt20" onChange={(event) => this.handleSorting(event)}>
                             <option> -- Order by --</option>
-                            <option>Vote score</option>
-                            <option>Publication date</option>
+                            <option value="upVote">Higher vote score</option>
+                            <option value="downVote">Lower vote score</option>
+                            <option value="latest">Latest</option>
+                            <option value="oldest">Oldest</option>
                         </select>
                     </div>
                     <div className="col-md-6 col-sm-12 form-group form-group-lg">
@@ -77,16 +83,17 @@ class ListPosts extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        posts: state.posts
+        posts: state.posts.posts
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         fetchPosts: () => dispatch(fetchPosts()),
-        fetchCategoryPosts: (categoryPath) => dispatch(fetchCategoryPosts(categoryPath)),
-        votePost: (postId, strVote) => dispatch(votePost(postId, strVote))
+        fetchCategoryPosts: (categoryPath, path) => dispatch(fetchCategoryPosts(categoryPath, path)),
+        votePost: (postId, strVote) => dispatch(votePost(postId, strVote)),
+        postsOrderedBy: (posts, sortBy) => dispatch(postsOrderedBy(posts, sortBy))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ListPosts)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ListPosts))

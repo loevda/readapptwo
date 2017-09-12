@@ -10,24 +10,28 @@ export function formatDate(timestamp) {
 }
 
 export function sortRes (res, sortBy) {
-    switch (sortBy) {
-        case 'upVote':
-            return [...res].sort((a, b) => {
-                return b.voteScore - a.voteScore
-            })
-        case 'downVote':
-            return [...res].sort((a, b) => {
-                return b.voteScore + a.voteScore
-            })
-        case 'latest':
-            return [...res].sort((a, b) => {
-                return b.timestamp - a.timestamp
-            })
-        case 'oldest':
-            return [...res].sort((a, b) => {
-                return b.timestamp + a.timestamp
-            })
-        default:
-            return res
+    if (res && res.length > 1) {
+        switch (sortBy) {
+            case 'upVote':
+                return [...res].sort((a, b) => {
+                    return b.voteScore - a.voteScore
+                })
+            case 'downVote':
+                return [...res].sort((a, b) => {
+                    return b.voteScore + a.voteScore
+                })
+            case 'latest':
+                return [...res].sort((a, b) => {
+                    return b.timestamp - a.timestamp
+                })
+            case 'oldest':
+                return [...res].sort((a, b) => {
+                    return a.timestamp - b.timestamp
+                })
+            default:
+                return res
+        }
+
     }
+    return res
 }

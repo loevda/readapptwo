@@ -13,17 +13,26 @@ import {
     GET_CATEGORIES,
     POST_VOTE,
     ADD_COMMENT,
-    GET_POSTS_BY_UPVOTES,
-    GET_POSTS_BY_TIMESTAMP
+    GET_ORDERED_POSTS_BY
 } from '../actions'
 
+import { sortRes } from '../utils/helpers'
 
-function posts (state = [], action) {
+function posts (state = {posts: [], sortBy: 'latest', path: '/'}, action) {
+    const orderBy = state.sortBy
     switch (action.type) {
         case GET_POSTS:
-            return action.posts
+            return {...state, posts: sortRes(action.posts, orderBy)}
         case GET_CATEGORY_POSTS:
-            return action.posts
+            return {...state,
+                posts: sortRes(action.posts, orderBy),
+                path: action.path
+            }
+        case GET_ORDERED_POSTS_BY:
+            return {...state,
+                posts: sortRes(action.posts, action.sortBy),
+                sortBy: action.sortBy
+            }
         default :
             return state
     }

@@ -4,8 +4,7 @@
 import * as PostAPI from '../utils/api'
 
 export const GET_POSTS = 'GET_POSTS'
-export const GET_POSTS_BY_UPVOTES = 'GET_POSTS_BY_UPVOTES'
-export const GET_POSTS_BY_TIMESTAMP = 'GET_POSTS_BY_TIMESTAMP'
+export const GET_ORDERED_POSTS_BY = 'GET_ORDERED_POSTS_BY'
 export const GET_POST = 'GET_POST'
 export const GET_POST_COMMENTS = 'GET_POST_COMMENTS'
 export const GET_COMMENTS = 'GET_COMMENTS'
@@ -80,15 +79,16 @@ export const fetchPostComments = (postId) => dispatch => (
         })
 )
 
-export const getCategoryPosts = categoryPosts => ({
+export const getCategoryPosts = (posts, path) => ({
     type: GET_CATEGORY_POSTS,
-    categoryPosts
+    posts,
+    path
 })
 
-export const fetchCategoryPosts = (categoryId) => dispatch => (
+export const fetchCategoryPosts = (categoryId, path) => dispatch => (
     PostAPI.fetchCategoryPosts(categoryId)
         .then((posts) => {
-            dispatch(getPosts(posts))
+            dispatch(getCategoryPosts(posts, path))
         })
 )
 
@@ -105,7 +105,15 @@ export const votePost = (postId, voteStr) => dispatch => (
         })
 )
 
+export const orderPosts = (posts, sortBy) => ({
+    type: GET_ORDERED_POSTS_BY,
+    posts,
+    sortBy
+})
 
+export const postsOrderedBy = (posts, sortBy) => dispatch => (
+    dispatch(orderPosts(posts, sortBy))
+)
 
 
 

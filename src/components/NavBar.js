@@ -38,6 +38,9 @@ class NavBar extends React.Component {
                         <hr />
                         <div className="row">
                             <div className="btn-group btn-group-justified" role="group" aria-label="">
+                                <div className="btn-group" role="group">
+                                    <Link to={`/`} className="btn btn-info">View all posts</Link>
+                                </div>
                                 {this.props.categories.map((category) => (
                                     <div key={category.name} className="btn-group" role="group">
                                         <Link to={`/${category.name}/posts`} className="btn btn-info">View posts for {capitalize(category.name)}</Link>

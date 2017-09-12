@@ -6,8 +6,11 @@ import React from 'react'
 class Comment extends React.Component {
 
     render() {
+        const { comment } = this.props
         return (
-            <div></div>
+            <div>
+                {comment.body}
+            </div>
         )
     }
 }
