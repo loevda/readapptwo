@@ -13,6 +13,7 @@ export const ADD_POST = 'ADD_POST'
 export const EDIT_POST = 'EDIT_POST'
 export const GET_CATEGORIES = 'GET_CATEGORIES'
 export const POST_VOTE = 'POST_VOTE'
+export const POSTS_VOTE = 'POSTS_VOTE'
 export const ADD_COMMENT = 'ADD_COMMENT'
 
 export const getCategories = categories => ({
@@ -37,7 +38,7 @@ export const fetchPosts = () => dispatch => (
         .fetchPosts()
         .then((posts) => {
             dispatch(getPosts(posts))
-        })
+    })
 )
 
 export const getComments = comments => ({
@@ -100,8 +101,19 @@ export const postVote = post => ({
 export const votePost = (postId, voteStr) => dispatch => (
     PostAPI.votePost(postId, voteStr)
         .then((post) => {
-            console.log(post)
             dispatch(postVote(post))
+        })
+)
+
+export const postsVote = post => ({
+    type: POSTS_VOTE,
+    post
+})
+
+export const votePosts = (postId, voteStr) => dispatch => (
+    PostAPI.votePost(postId, voteStr)
+        .then((post) => {
+            dispatch(postsVote(post))
         })
 )
 

@@ -3,11 +3,11 @@
  */
 import React from 'react'
 import { connect } from 'react-redux'
-import { fetchPosts, fetchCategoryPosts, votePost, postsOrderedBy } from '../actions'
+import { fetchPosts, fetchCategoryPosts, votePosts, postsOrderedBy } from '../actions'
 import { Link, withRouter } from 'react-router-dom'
 import PostActionBar from './PostActionBar'
 import PostInfo from './PostInfo'
-
+import { isEqual } from 'lodash'
 
 class ListPosts extends React.Component {
 
@@ -16,9 +16,12 @@ class ListPosts extends React.Component {
         category ? this.props.fetchCategoryPosts(category, this.props.match.params.category) : this.props.fetchPosts()
     }
 
-    componentDidUpdate(prevProps) {
-        let category = this.props.match.params.category
-        category ? this.props.fetchCategoryPosts(category, this.props.match.params.category) : this.props.fetchPosts()
+    componentDidUpdate(prevProps, prevState) {
+        if (!isEqual(this.props, prevProps)) {
+            let category = this.props.match.params.category
+            category ? this.props.fetchCategoryPosts(category, this.props.match.params.category) : this.props.fetchPosts()
+            console.log('hh')
+        }
     }
 
     handleSorting(e) {
@@ -28,7 +31,7 @@ class ListPosts extends React.Component {
 
     render() {
 
-        const { posts, votePost, sortBy } = this.props
+        const { posts, votePosts, sortBy } = this.props
 
         return (
             <div className="container">
@@ -65,7 +68,7 @@ class ListPosts extends React.Component {
                             </h3>
                             <PostInfo voteScore={post.voteScore} numComments={3} timestamp={post.timestamp} />
                             <hr />
-                            <PostActionBar votePost={votePost} post={post} next="/"/>
+                            <PostActionBar votePost={votePosts} post={post} next="/"/>
                         </div>
                     )) :
                     <div className="text-center">
@@ -86,7 +89,8 @@ class ListPosts extends React.Component {
 const mapStateToProps = (state) => {
     return {
         posts: state.posts.posts,
-        sortBy: state.posts.sortBy
+        sortBy: state.posts.sortBy,
+        path: state.posts.path
     }
 }
 
@@ -94,7 +98,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         fetchPosts: () => dispatch(fetchPosts()),
         fetchCategoryPosts: (categoryPath, path) => dispatch(fetchCategoryPosts(categoryPath, path)),
-        votePost: (postId, strVote) => dispatch(votePost(postId, strVote)),
+        votePosts: (postId, strVote) => dispatch(votePosts(postId, strVote)),
         postsOrderedBy: (posts, sortBy) => dispatch(postsOrderedBy(posts, sortBy))
     }
 }

@@ -2,16 +2,11 @@
  * Created by david2099 on 11/09/17.
  */
 import React from 'react'
-import { withRouter } from 'react-router-dom'
 
 class PostActionBar extends React.Component {
 
-    onDeletePost(path) {
-        this.props.history.push(path)
-    }
-
     render() {
-        const { votePost, post, next } = this.props
+        const { votePost, post } = this.props
         return (
             <div className="btn-group btn-group-justified mt20" role="group" aria-label="">
                 <div className="btn-group" role="group">
@@ -40,4 +35,4 @@ class PostActionBar extends React.Component {
 
 }
 
-export default withRouter(PostActionBar)
+export default PostActionBar

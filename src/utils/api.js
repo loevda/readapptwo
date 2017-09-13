@@ -32,6 +32,12 @@ export function fetchPosts () {
         }))
 }
 
+export function fetchPostsComments (postId) {
+    return fetch(`${api}/posts/${postId}`, { headers })
+        .then(res => res.json())
+        .then(data => data)
+}
+
 export function fetchCategoryPosts (categoryId) {
     return fetch(`${api}/${categoryId}/posts`, { headers })
         .then(res => res.json())

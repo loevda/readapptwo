@@ -12,6 +12,7 @@ import {
     EDIT_POST,
     GET_CATEGORIES,
     POST_VOTE,
+    POSTS_VOTE,
     ADD_COMMENT,
     GET_ORDERED_POSTS_BY
 } from '../actions'
@@ -32,6 +33,12 @@ function posts (state = {posts: [], sortBy: 'latest', path: '/'}, action) {
             return {...state,
                 posts: sortRes(action.posts, action.sortBy),
                 sortBy: action.sortBy
+            }
+        case POSTS_VOTE:
+            return {...state,
+                posts: sortRes(state.posts.filter((post) => {
+                    post.id !== action.post.id
+                }).concat(action.post), state.sortBy)
             }
         default :
             return state

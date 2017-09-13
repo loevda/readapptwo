@@ -5,8 +5,13 @@ export function capitalize (str = '') {
 }
 
 export function formatDate(timestamp) {
-    const newDate = new Date(timestamp)
-    return newDate.toUTCString()
+    try {
+        const newDate = new Date(timestamp)
+        return newDate.toUTCString()
+    } catch (e) {
+        console.log(e)
+    }
+    return timestamp
 }
 
 export function sortRes (res, sortBy) {
@@ -18,7 +23,7 @@ export function sortRes (res, sortBy) {
                 })
             case 'downVote':
                 return [...res].sort((a, b) => {
-                    return b.voteScore + a.voteScore
+                    return a.voteScore - b.voteScore
                 })
             case 'latest':
                 return [...res].sort((a, b) => {
