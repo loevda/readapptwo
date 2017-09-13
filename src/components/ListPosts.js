@@ -31,7 +31,7 @@ class ListPosts extends React.Component {
 
     render() {
 
-        const { posts, votePosts, sortBy } = this.props
+        const { posts, votePosts, sortBy, author } = this.props
 
         return (
             <div className="container">
@@ -66,7 +66,7 @@ class ListPosts extends React.Component {
                                     {post.title}
                                 </Link>
                             </h3>
-                            <PostInfo voteScore={post.voteScore} numComments={3} timestamp={post.timestamp} />
+                            <PostInfo post={post} numComments={3} />
                             <hr />
                             <PostActionBar votePost={votePosts} post={post} next="/"/>
                         </div>

@@ -4,21 +4,21 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { fetchPostComments } from '../actions'
-import { formatDate } from '../utils/helpers'
+import { capitalize, formatDate } from '../utils/helpers'
 import { withRouter } from 'react-router-dom'
 
 class PostInfo extends React.Component {
 
     render () {
 
-        const { voteScore, timestamp } = this.props
+        const { post, timestamp, author, voteScore } = this.props.post
         const numComments = this.props.comments.length
         const readableDate = formatDate(timestamp)
 
         return (
             <div className="col-md-12 mb20">
-                <h5 className="small col-md-6 col-sm-12">Vote score: {voteScore} / Nr. comments: {numComments}</h5>
-                <h5 className="small col-md-6 col-sm-12">{readableDate}</h5>
+                <h5 className="small col-md-5 col-sm-12">Vote score: {voteScore} / Nr. comments: {numComments}</h5>
+                <h5 className="small col-md-7 col-sm-12">{author} | {readableDate}</h5>
             </div>
         )
     }

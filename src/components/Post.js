@@ -5,6 +5,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { fetchPost, fetchPostComments, votePost } from '../actions'
 import PostActionBar from './PostActionBar'
+import PostInfo from './PostInfo'
+import { capitalize, formatDate } from '../utils/helpers'
 
 class Post extends React.Component {
 
@@ -19,16 +21,29 @@ class Post extends React.Component {
         return (
             <div className="container">
                 <h1 className="faster">{post.title}</h1>
-                <div className="col-md-6">
-                    <div className="pull-left">Vote score: {post.voteScore}</div>
-                    <div className="pull-right">Nr. comments: {comments.length}</div>
-                </div>
+                <PostInfo post={post} numComments={comments.length} />
                 <div className="clearfix"></div>
                 <hr />
                 <p>{post.body}</p>
                 <hr />
                 <PostActionBar votePost={votePost} post={post} />
+                <hr />
+                <div className="comments-cont">
+                    {comments.map((comment) => (
+                        <div className="col-md-12" key={comment.id}>
+                            <div className="col-md-6 col-sm-12">
+                                <h5 className="small pull-left">Vote score: {comment.voteScore}</h5>
+                            </div>
+                            <div className="col-md-6 col-sm-12">
+                                <h5 className="small">{capitalize(comment.author)} | {formatDate(comment.timestamp)}</h5>
+                            </div>
+                            <div className="clearfix"></div>
 
+                            <p>{comment.body}</p>
+                            <hr />
+                        </div>
+                    ))}
+                </div>
             </div>
         )
     }

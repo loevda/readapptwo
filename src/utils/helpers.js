@@ -15,7 +15,7 @@ export function formatDate(timestamp) {
 }
 
 export function sortRes (res, sortBy) {
-    if (res && res.length > 1) {
+    if (res.length > 1) {
         switch (sortBy) {
             case 'upVote':
                 return [...res].sort((a, b) => {
