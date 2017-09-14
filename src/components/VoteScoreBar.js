@@ -6,16 +6,16 @@ import React from 'react'
 class VoteScoreBar extends React.Component {
 
     render() {
-        const { votePost, obj } = this.props
+        const { voteObj, obj } = this.props
         return (
             <div className="btn-group btn-group-justified mt20" role="group" aria-label="">
                 <div className="btn-group" role="group">
-                    <button className="btn btn-group btn-info" role="group" onClick={() => votePost(obj.id, "upVote")}>
+                    <button className="btn btn-group btn-info" role="group" onClick={() => voteObj(obj.id, "upVote")}>
                         <span className="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> +
                     </button>
                 </div>
                 <div className="btn-group" role="group">
-                    <button className="btn btn-group btn-info" role="group" onClick={() => votePost(obj.id, "downVote")}>
+                    <button className="btn btn-group btn-info" role="group" onClick={() => voteObj(obj.id, "downVote")}>
                         <span className="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> -
                     </button>
                 </div>

@@ -61,7 +61,7 @@ class ListPosts extends React.Component {
                             <PostInfo post={post} numComments={3} />
                             <hr />
                             <div className="col-md-4 col-sm-6">
-                                <VoteScoreBar votePost={votePosts} obj={post} next="/"/>
+                                <VoteScoreBar voteObj={votePosts} obj={post} next="/"/>
                             </div>
                             <div className="clearfix"></div>
                         </div>

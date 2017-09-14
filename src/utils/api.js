@@ -67,3 +67,12 @@ export function votePost (postId, voteStr) {
 }
 
 
+export function voteComment (commentId, voteStr) {
+    return fetch(`${api}/comments/${commentId}`,
+        { headers: {...headers, 'Content-Type': 'application/json'},
+            method: 'POST', body: JSON.stringify({option: voteStr}) })
+        .then(res => res.json())
+        .then(data => data)
+}
+
+

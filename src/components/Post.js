@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import { connect } from 'react-redux'
-import { fetchPost, fetchPostComments, votePost, orderPostCommentsBy, fetchPostDelete } from '../actions'
+import { fetchPost, fetchPostComments, votePost, orderPostCommentsBy, fetchPostDelete, voteComment } from '../actions'
 import VoteScoreBar from './VoteScoreBar'
 import EditRemoveBar from './EditRemoveBar'
 import OrderSelect from './OrderSelect'
@@ -29,7 +29,7 @@ class Post extends React.Component {
     }
 
     render() {
-        const { post, comments, votePost, sortBy } = this.props
+        const { post, comments, votePost, sortBy, voteComment } = this.props
 
         return (
             <div className="container">
@@ -41,7 +41,7 @@ class Post extends React.Component {
                 <hr />
                 <div className="col-md-12 mb20">
                     <div className="col-md-6">
-                        <VoteScoreBar votePost={votePost} obj={post} />
+                        <VoteScoreBar voteObj={votePost} obj={post} />
                     </div>
                     <div className="col-md-6">
                         <EditRemoveBar deletePost={(e) => this.handleDelete(e)} obj={post} />
@@ -82,7 +82,7 @@ class Post extends React.Component {
                             <p className="body-content comment">{comment.body}</p>
                             <div className="col-md-12">
                                 <div className="col-md-4 col-sm-8 col-xs-12">
-                                    <VoteScoreBar votePost={votePost} obj={comment} />
+                                    <VoteScoreBar voteObj={voteComment} obj={comment} />
                                 </div>
                                 <div className="clearfix"></div>
                             </div>
@@ -110,7 +110,8 @@ const mapDispatchToProps = (dispatch) => {
         fetchPostComments: (postId) => dispatch(fetchPostComments(postId)),
         votePost: (postId, strVote) => dispatch(votePost(postId, strVote)),
         fetchPostDelete: (postId, history) => dispatch(fetchPostDelete(postId, history)),
-        orderPostCommentsBy: (comments, sortBy) => dispatch(orderPostCommentsBy(comments, sortBy))
+        orderPostCommentsBy: (comments, sortBy) => dispatch(orderPostCommentsBy(comments, sortBy)),
+        voteComment: (commentId, voteStr) => dispatch(voteComment(commentId, voteStr))
     }
 }
 

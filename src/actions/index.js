@@ -18,6 +18,7 @@ export const POST_VOTE = 'POST_VOTE'
 export const POSTS_VOTE = 'POSTS_VOTE'
 export const ADD_COMMENT = 'ADD_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
+export const COMMENT_VOTE = 'COMMENT_VOTE'
 
 export const getCategories = categories => ({
     type: GET_CATEGORIES,
@@ -155,6 +156,19 @@ export const orderPostComments = (comments, sortBy) => ({
 export const orderPostCommentsBy = (comments, sortBy) => dispatch => (
     dispatch(orderPostComments(comments, sortBy))
 )
+
+export const commentVote = comment => ({
+    type: COMMENT_VOTE,
+    comment
+})
+
+export const voteComment = (commentId, voteStr) => dispatch => (
+    PostAPI.voteComment(commentId, voteStr)
+        .then((comment) => {
+            dispatch(commentVote(comment))
+        })
+)
+
 
 
 

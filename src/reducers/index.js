@@ -18,7 +18,8 @@ import {
     POST_VOTE,
     POSTS_VOTE,
     ADD_COMMENT,
-    DELETE_COMMENT
+    DELETE_COMMENT,
+    COMMENT_VOTE
 } from '../actions'
 
 import { sortRes } from '../utils/helpers'
@@ -69,6 +70,13 @@ function post (state =  { post: {}, comments: [], sortBy: 'upVote', rehydrated: 
             return {...state,
                 comments: sortRes(action.comments, action.sortBy),
                 sortBy: action.sortBy
+            }
+        case COMMENT_VOTE:
+            return {
+                ...state,
+                comments: sortRes(state.comments.filter((comment) => {
+                    return comment.id !== action.comment.id
+                }).concat(action.comment), state.sortBy)
             }
         default:
             return state
