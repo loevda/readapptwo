@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import { connect } from 'react-redux'
-import { fetchPost, fetchPostComments, votePost } from '../actions'
+import { fetchPost, fetchPostComments, votePost, orderPostCommentsBy } from '../actions'
 import VoteScoreBar from './VoteScoreBar'
 import EditRemoveBar from './EditRemoveBar'
 import OrderSelect from './OrderSelect'
@@ -13,18 +13,18 @@ import { Link } from 'react-router-dom'
 
 class Post extends React.Component {
 
-    componentWillMount() {
+    componentDidMount() {
         let postId = this.props.match.params.postId
         this.props.fetchPost(postId)
         this.props.fetchPostComments(postId)
     }
 
-    handelSorting (e) {
-
+    handleSorting (e) {
+        this.props.orderPostCommentsBy(this.props.comments, e.target.value)
     }
 
     render() {
-        const { post, comments, votePost } = this.props
+        const { post, comments, votePost, sortBy } = this.props
         return (
             <div className="container">
                 <h1 className="faster">{post.title}</h1>
@@ -50,7 +50,7 @@ class Post extends React.Component {
 
 
                 <div className="col-md-6 col-sm-12 form-group form-group-lg">
-                    <OrderSelect sortBy={`upVote`} handleSorting={(e) => this.handleSorting(e)} />
+                    <OrderSelect sortBy={sortBy} handleSorting={(e) => this.handleSorting(e)} key="comment-ordering" />
                 </div>
                 <div className="col-md-6 col-sm-12 form-group form-group-lg">
                     <Link to="/"
@@ -72,7 +72,6 @@ class Post extends React.Component {
                                 <h5 className="small">{capitalize(comment.author)} | {formatDate(comment.timestamp)}</h5>
                             </div>
                             <div className="clearfix"></div>
-
                             <p>{comment.body}</p>
                             <hr />
                         </div>
@@ -86,7 +85,8 @@ class Post extends React.Component {
 const mapStateToProps = (state) => {
     return {
         post: state.post.post,
-        comments: state.post.comments
+        comments: state.post.comments,
+        sortBy: state.post.sortBy
     }
 }
 
@@ -94,7 +94,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         fetchPost: (postId) => dispatch(fetchPost(postId)),
         fetchPostComments: (postId) => dispatch(fetchPostComments(postId)),
-        votePost: (postId, strVote) => dispatch(votePost(postId, strVote))
+        votePost: (postId, strVote) => dispatch(votePost(postId, strVote)),
+        orderPostCommentsBy: (comments, sortBy) => dispatch(orderPostCommentsBy(comments, sortBy))
     }
 }
 

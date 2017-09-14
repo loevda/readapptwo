@@ -31,7 +31,7 @@ class ListPosts extends React.Component {
 
     render() {
 
-        const { posts, votePosts, sortBy, author } = this.props
+        const { posts, votePosts, sortBy } = this.props
 
         return (
             <div className="container">

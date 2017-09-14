@@ -11,12 +11,10 @@ class OrderSelect extends React.Component {
 
     render () {
 
-        const { sortBy } = this.props
-
         return (
             <div className="input-group input-group-lg  mt20">
                 <span className="input-group-addon" id="basic-addon1">Sort by</span>
-                <select defaultValue={sortBy} className="form-control" onChange={(event) => this.handleSorting(event)} aria-describedby="basic-addon1">
+                <select value={this.props.sortBy} className="form-control" onChange={(event) => this.handleSorting(event)} aria-describedby="basic-addon1">
                     <option value="upVote">Higher vote score</option>
                     <option value="downVote">Lower vote score</option>
                     <option value="latest">Latest</option>

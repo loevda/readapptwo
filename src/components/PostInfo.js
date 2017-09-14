@@ -11,14 +11,14 @@ class PostInfo extends React.Component {
 
     render () {
 
-        const { post, timestamp, author, voteScore } = this.props.post
+        const { timestamp, author, voteScore } = this.props.post
         const numComments = this.props.comments.length
         const readableDate = formatDate(timestamp)
 
         return (
             <div className="col-md-12 mb20">
                 <h5 className="small col-md-5 col-sm-12">Vote score: {voteScore} / Nr. comments: {numComments}</h5>
-                <h5 className="small col-md-7 col-sm-12">{author} | {readableDate}</h5>
+                <h5 className="small col-md-7 col-sm-12">{capitalize(author)} | {readableDate}</h5>
             </div>
         )
     }

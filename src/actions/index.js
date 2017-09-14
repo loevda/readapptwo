@@ -147,7 +147,7 @@ export const postsOrderedBy = (posts, sortBy) => dispatch => (
 
 
 export const orderPostComments = (comments, sortBy) => ({
-    type: GET_ORDERED_POSTS_BY,
+    type: GET_ORDERED_POST_COMMENTS_BY,
     comments,
     sortBy
 })

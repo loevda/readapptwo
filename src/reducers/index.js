@@ -2,6 +2,7 @@
  * Created by david2099 on 10/09/17.
  */
 import { combineReducers } from 'redux';
+
 import {
     GET_POSTS,
     GET_POST,
@@ -22,7 +23,7 @@ import {
 
 import { sortRes } from '../utils/helpers'
 
-function posts (state = {posts: [], sortBy: 'upVote', path: '/'}, action) {
+function posts (state = {posts: [], sortBy: 'upVote', path: '/', rehydrated: false}, action) {
     const orderBy = state.sortBy
     switch (action.type) {
         case GET_POSTS:
@@ -48,16 +49,18 @@ function posts (state = {posts: [], sortBy: 'upVote', path: '/'}, action) {
     }
 }
 
-function post (state =  { post: {}, comments: [], sortBy: 'upVote'}, action) {
+function post (state =  { post: {}, comments: [], sortBy: 'upVote', rehydrated: false}, action) {
     switch (action.type) {
         case GET_POST:
-            return {...state, post: action.post }
+            return {...state, post: action.post,
+                comments: sortRes(state.comments, state.sortBy)
+            }
         case POST_VOTE:
             return {...state, post: action.post }
         case DELETE_POST:
             return {...state, post: action.post }
         case GET_POST_COMMENTS:
-            return {...state, comments: action.comments }
+            return {...state, comments: sortRes(action.comments, state.sortBy) }
         case DELETE_COMMENT:
             return {...state, comments: state.comments.filter((comment) => {
                 comment.id !== action.comment.id

@@ -1,7 +1,12 @@
 export function capitalize (str = '') {
-    return typeof str !== 'string'
-        ? ''
-        : str[0].toUpperCase() + str.slice(1)
+    try {
+        return typeof str !== 'string'
+            ? ''
+            : str[0].toUpperCase() + str.slice(1)
+    } catch(e) {
+        return str
+    }
+
 }
 
 export function formatDate(timestamp) {
@@ -9,9 +14,8 @@ export function formatDate(timestamp) {
         const newDate = new Date(timestamp)
         return newDate.toUTCString()
     } catch (e) {
-        console.log(e)
+        return timestamp
     }
-    return timestamp
 }
 
 export function sortRes (res, sortBy) {
