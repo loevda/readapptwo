@@ -5,7 +5,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { fetchPosts, fetchCategoryPosts, votePosts, postsOrderedBy } from '../actions'
 import { Link, withRouter } from 'react-router-dom'
-import PostActionBar from './PostActionBar'
 import PostInfo from './PostInfo'
 import { isEqual } from 'lodash'
 import OrderSelect from './OrderSelect'
@@ -62,7 +61,7 @@ class ListPosts extends React.Component {
                             <PostInfo post={post} numComments={3} />
                             <hr />
                             <div className="col-md-4 col-sm-6">
-                            <VoteScoreBar votePost={votePosts} obj={post} next="/"/>
+                                <VoteScoreBar votePost={votePosts} obj={post} next="/"/>
                             </div>
                             <div className="clearfix"></div>
                         </div>

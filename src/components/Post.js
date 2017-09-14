@@ -4,7 +4,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { fetchPost, fetchPostComments, votePost } from '../actions'
-import PostActionBar from './PostActionBar'
+import VoteScoreBar from './VoteScoreBar'
+import EditRemoveBar from './EditRemoveBar'
+import OrderSelect from './OrderSelect'
 import PostInfo from './PostInfo'
 import { capitalize, formatDate } from '../utils/helpers'
 import { Link } from 'react-router-dom'
@@ -31,19 +33,24 @@ class Post extends React.Component {
                 <hr />
                 <p>{post.body}</p>
                 <hr />
-                <PostActionBar votePost={votePost} post={post} />
+                <div className="col-md-12 mb20">
+                    <div className="col-md-6">
+                        <VoteScoreBar votePost={votePost} obj={post} />
+                    </div>
+                    <div className="col-md-6">
+                        <EditRemoveBar votePost={votePost} obj={post} />
+                    </div>
+                </div>
+
                 <hr />
 
+                <div className="col-md-12">
+                    <h4 className="faster border-title mt20">Comments section</h4>
+                </div>
+
+
                 <div className="col-md-6 col-sm-12 form-group form-group-lg">
-                    <div className="input-group input-group-lg  mt20">
-                        <span className="input-group-addon" id="basic-addon1">Sort by</span>
-                        <select defaultValue="latest" className="form-control" onChange={(event) => this.handleSorting(event)} aria-describedby="basic-addon1">
-                            <option value="upVote">Higher vote score</option>
-                            <option value="downVote">Lower vote score</option>
-                            <option value="latest">Latest</option>
-                            <option value="oldest">Oldest</option>
-                        </select>
-                    </div>
+                    <OrderSelect sortBy={`upVote`} handleSorting={(e) => this.handleSorting(e)} />
                 </div>
                 <div className="col-md-6 col-sm-12 form-group form-group-lg">
                     <Link to="/"
@@ -78,8 +85,8 @@ class Post extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        post: state.post,
-        comments: state.comments
+        post: state.post.post,
+        comments: state.post.comments
     }
 }
 

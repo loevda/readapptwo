@@ -6,6 +6,8 @@ import {
     GET_POSTS,
     GET_POST,
     GET_POST_COMMENTS,
+    GET_ORDERED_POSTS_BY,
+    GET_ORDERED_POST_COMMENTS_BY,
     DELETE_POST,
     GET_COMMENTS,
     GET_CATEGORY_POSTS,
@@ -15,7 +17,7 @@ import {
     POST_VOTE,
     POSTS_VOTE,
     ADD_COMMENT,
-    GET_ORDERED_POSTS_BY
+    DELETE_COMMENT
 } from '../actions'
 
 import { sortRes } from '../utils/helpers'
@@ -39,21 +41,32 @@ function posts (state = {posts: [], sortBy: 'upVote', path: '/'}, action) {
             return {...state,
                 posts: sortRes(state.posts.filter((post) => {
                     post.id !== action.post.id
-                }).concat(action.post), state.sortBy)
+                }).concat(action.post), orderBy)
             }
         default :
             return state
     }
 }
 
-function post (state =  {}, action) {
+function post (state =  { post: {}, comments: [], sortBy: 'upVote'}, action) {
     switch (action.type) {
         case GET_POST:
-            return action.post
+            return {...state, post: action.post }
         case POST_VOTE:
-            return action.post
+            return {...state, post: action.post }
         case DELETE_POST:
-            return action.post
+            return {...state, post: action.post }
+        case GET_POST_COMMENTS:
+            return {...state, comments: action.comments }
+        case DELETE_COMMENT:
+            return {...state, comments: state.comments.filter((comment) => {
+                comment.id !== action.comment.id
+            })}
+        case GET_ORDERED_POST_COMMENTS_BY:
+            return {...state,
+                comments: sortRes(action.comments, action.sortBy),
+                sortBy: action.sortBy
+            }
         default:
             return state
     }
@@ -61,8 +74,6 @@ function post (state =  {}, action) {
 
 function comments (state = [], action) {
     switch (action.type) {
-        case GET_POST_COMMENTS:
-            return action.comments
         case GET_COMMENTS:
             return action.comments
         default:

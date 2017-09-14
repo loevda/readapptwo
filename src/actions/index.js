@@ -7,6 +7,7 @@ export const GET_POSTS = 'GET_POSTS'
 export const GET_ORDERED_POSTS_BY = 'GET_ORDERED_POSTS_BY'
 export const GET_POST = 'GET_POST'
 export const GET_POST_COMMENTS = 'GET_POST_COMMENTS'
+export const GET_ORDERED_POST_COMMENTS_BY = 'GET_ORDERED_POST_COMMENTS_BY'
 export const GET_COMMENTS = 'GET_COMMENTS'
 export const GET_CATEGORY_POSTS = 'GET_CATEGORY_POSTS'
 export const ADD_POST = 'ADD_POST'
@@ -16,6 +17,7 @@ export const GET_CATEGORIES = 'GET_CATEGORIES'
 export const POST_VOTE = 'POST_VOTE'
 export const POSTS_VOTE = 'POSTS_VOTE'
 export const ADD_COMMENT = 'ADD_COMMENT'
+export const DELETE_COMMENT = 'DELETE_COMMENT'
 
 export const getCategories = categories => ({
     type: GET_CATEGORIES,
@@ -143,6 +145,16 @@ export const postsOrderedBy = (posts, sortBy) => dispatch => (
     dispatch(orderPosts(posts, sortBy))
 )
 
+
+export const orderPostComments = (comments, sortBy) => ({
+    type: GET_ORDERED_POSTS_BY,
+    comments,
+    sortBy
+})
+
+export const orderPostCommentsBy = (comments, sortBy) => dispatch => (
+    dispatch(orderPostComments(comments, sortBy))
+)
 
 
 
