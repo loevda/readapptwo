@@ -8,6 +8,8 @@ import { Link, withRouter } from 'react-router-dom'
 import PostActionBar from './PostActionBar'
 import PostInfo from './PostInfo'
 import { isEqual } from 'lodash'
+import OrderSelect from './OrderSelect'
+import VoteScoreBar from './VoteScoreBar'
 
 class ListPosts extends React.Component {
 
@@ -18,9 +20,8 @@ class ListPosts extends React.Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (!isEqual(this.props, prevProps)) {
-            let category = this.props.match.params.category
+            const category = this.props.match.params.category
             category ? this.props.fetchCategoryPosts(category, this.props.match.params.category) : this.props.fetchPosts()
-            console.log('hh')
         }
     }
 
@@ -37,16 +38,8 @@ class ListPosts extends React.Component {
             <div className="container">
                 <hr />
                 <div className="row">
-                    <div className="col-md-6 col-sm-12 form-group form-group-lg">
-                        <div className="input-group input-group-lg  mt20">
-                            <span className="input-group-addon" id="basic-addon1">Sort by</span>
-                            <select defaultValue={sortBy} className="form-control" onChange={(event) => this.handleSorting(event)} aria-describedby="basic-addon1">
-                                <option value="upVote">Higher vote score</option>
-                                <option value="downVote">Lower vote score</option>
-                                <option value="latest">Latest</option>
-                                <option value="oldest">Oldest</option>
-                            </select>
-                        </div>
+                    <div className="col-md-6 col-sm-12">
+                        <OrderSelect sortBy={sortBy} handleSorting={(e) => this.handleSorting(e)} />
                     </div>
                     <div className="col-md-6 col-sm-12 form-group form-group-lg">
                         <Link to="/"
@@ -68,12 +61,15 @@ class ListPosts extends React.Component {
                             </h3>
                             <PostInfo post={post} numComments={3} />
                             <hr />
-                            <PostActionBar votePost={votePosts} post={post} next="/"/>
+                            <div className="col-md-4 col-sm-6">
+                            <VoteScoreBar votePost={votePosts} obj={post} next="/"/>
+                            </div>
+                            <div className="clearfix"></div>
                         </div>
                     )) :
                     <div className="text-center">
                         <h2 className="no-post">
-                            There is not post available.
+                            There is no post available.
                             <br />
                             Start Posting now!
                         </h2>

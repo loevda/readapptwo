@@ -10,6 +10,7 @@ export const GET_POST_COMMENTS = 'GET_POST_COMMENTS'
 export const GET_COMMENTS = 'GET_COMMENTS'
 export const GET_CATEGORY_POSTS = 'GET_CATEGORY_POSTS'
 export const ADD_POST = 'ADD_POST'
+export const DELETE_POST = 'DELETE_POST'
 export const EDIT_POST = 'EDIT_POST'
 export const GET_CATEGORIES = 'GET_CATEGORIES'
 export const POST_VOTE = 'POST_VOTE'
@@ -79,6 +80,21 @@ export const fetchPostComments = (postId) => dispatch => (
             dispatch(getPostComments(comments))
         })
 )
+
+
+export const deletePost = post => ({
+    type: DELETE_POST,
+    post
+})
+
+export const fetchPostDelete = (postId) => dispatch => (
+    PostAPI
+        .deletePost(postId)
+        .then((post) => {
+            dispatch(deletePost(post))
+        })
+)
+
 
 export const getCategoryPosts = (posts, path) => ({
     type: GET_CATEGORY_POSTS,

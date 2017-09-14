@@ -6,6 +6,7 @@ import {
     GET_POSTS,
     GET_POST,
     GET_POST_COMMENTS,
+    DELETE_POST,
     GET_COMMENTS,
     GET_CATEGORY_POSTS,
     ADD_POST,
@@ -19,7 +20,7 @@ import {
 
 import { sortRes } from '../utils/helpers'
 
-function posts (state = {posts: [], sortBy: 'latest', path: '/'}, action) {
+function posts (state = {posts: [], sortBy: 'upVote', path: '/'}, action) {
     const orderBy = state.sortBy
     switch (action.type) {
         case GET_POSTS:
@@ -50,6 +51,8 @@ function post (state =  {}, action) {
         case GET_POST:
             return action.post
         case POST_VOTE:
+            return action.post
+        case DELETE_POST:
             return action.post
         default:
             return state
