@@ -3,13 +3,13 @@
  */
 import React from 'react'
 import { connect } from 'react-redux'
-import { fetchPost, fetchPostComments, votePost, orderPostCommentsBy } from '../actions'
+import { fetchPost, fetchPostComments, votePost, orderPostCommentsBy, fetchPostDelete } from '../actions'
 import VoteScoreBar from './VoteScoreBar'
 import EditRemoveBar from './EditRemoveBar'
 import OrderSelect from './OrderSelect'
 import PostInfo from './PostInfo'
 import { capitalize, formatDate } from '../utils/helpers'
-import { Link } from 'react-router-dom'
+import { Link, withRouter} from 'react-router-dom'
 
 class Post extends React.Component {
 
@@ -23,8 +23,14 @@ class Post extends React.Component {
         this.props.orderPostCommentsBy(this.props.comments, e.target.value)
     }
 
+    handleDelete(e) {
+        const { post, history } = this.props
+        this.props.fetchPostDelete(post.id, history)
+    }
+
     render() {
         const { post, comments, votePost, sortBy } = this.props
+
         return (
             <div className="container">
                 <h1 className="faster">{post.title}</h1>
@@ -38,7 +44,7 @@ class Post extends React.Component {
                         <VoteScoreBar votePost={votePost} obj={post} />
                     </div>
                     <div className="col-md-6">
-                        <EditRemoveBar votePost={votePost} obj={post} />
+                        <EditRemoveBar deletePost={(e) => this.handleDelete(e)} obj={post} />
                     </div>
                 </div>
 
@@ -95,8 +101,9 @@ const mapDispatchToProps = (dispatch) => {
         fetchPost: (postId) => dispatch(fetchPost(postId)),
         fetchPostComments: (postId) => dispatch(fetchPostComments(postId)),
         votePost: (postId, strVote) => dispatch(votePost(postId, strVote)),
+        fetchPostDelete: (postId, history) => dispatch(fetchPostDelete(postId, history)),
         orderPostCommentsBy: (comments, sortBy) => dispatch(orderPostCommentsBy(comments, sortBy))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Post)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Post))

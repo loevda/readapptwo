@@ -14,7 +14,7 @@ class EditRemoveBar extends React.Component {
                     </button>
                 </div>
                 <div className="btn-group" role="group">
-                    <button className="btn btn-group btn-info" role="group">
+                    <button className="btn btn-group btn-info" role="group" onClick={(e) => this.props.deletePost(e)}>
                         <span className="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete
                     </button>
                 </div>

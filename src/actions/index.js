@@ -84,16 +84,16 @@ export const fetchPostComments = (postId) => dispatch => (
 )
 
 
-export const deletePost = post => ({
-    type: DELETE_POST,
-    post
+export const deletePost = () => ({
+    type: DELETE_POST
 })
 
-export const fetchPostDelete = (postId) => dispatch => (
+export const fetchPostDelete = (postId, history) => dispatch => (
     PostAPI
         .deletePost(postId)
         .then((post) => {
-            dispatch(deletePost(post))
+            history.push('/')
+            dispatch(deletePost())
         })
 )
 

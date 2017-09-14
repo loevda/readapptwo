@@ -58,7 +58,7 @@ function post (state =  { post: {}, comments: [], sortBy: 'upVote', rehydrated: 
         case POST_VOTE:
             return {...state, post: action.post }
         case DELETE_POST:
-            return {...state, post: action.post }
+            return {...state, post: {...state.post, deleted: true}}
         case GET_POST_COMMENTS:
             return {...state, comments: sortRes(action.comments, state.sortBy) }
         case DELETE_COMMENT:

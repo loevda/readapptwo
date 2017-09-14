@@ -41,8 +41,7 @@ export function fetchPostsComments (postId) {
 export function deletePost (postId) {
     return fetch(`${api}/posts/${postId}`,
         { headers: {...headers, 'Content-Type': 'application/json'}, method: 'DELETE' })
-        .then(res => res.json())
-        .then(data => data)
+        .then(res => res)
 }
 
 export function fetchCategoryPosts (categoryId) {
