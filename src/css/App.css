@@ -58,8 +58,16 @@
   margin-top: 20px;
 }
 
-.mb20 {
-  margin-bottom: 20px;
+.mb30 {
+  margin-bottom: 30px;
+}
+
+.mb40 {
+  margin-bottom: 40px;
+}
+
+.mb50 {
+  margin-bottom: 50px;
 }
 
 
@@ -71,4 +79,14 @@
   padding: 20px 0px 20px 0px;
   border-bottom: 1px solid #ababab;
   border-top: 1px solid #ababab;
+}
+
+.body-content {
+  font-size: 22px;
+  padding: 20px;
+}
+
+.comment-cont {
+  border-bottom: 1px solid #acacac;
+  padding-bottom: 20px;
 }

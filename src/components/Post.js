@@ -49,6 +49,7 @@ class Post extends React.Component {
                 </div>
 
                 <hr />
+                <div className="col-md-12">
 
                 <div className="col-md-12">
                     <h4 className="faster border-title mt20">Comments section</h4>
@@ -70,7 +71,7 @@ class Post extends React.Component {
 
                 <div className="comments-cont">
                     {comments.map((comment) => (
-                        <div className="col-md-12" key={comment.id}>
+                        <div className="col-md-12 comment-cont mt20 mb40" key={comment.id}>
                             <div className="col-md-6 col-sm-12">
                                 <h5 className="small pull-left">Vote score: {comment.voteScore}</h5>
                             </div>
@@ -78,10 +79,17 @@ class Post extends React.Component {
                                 <h5 className="small">{capitalize(comment.author)} | {formatDate(comment.timestamp)}</h5>
                             </div>
                             <div className="clearfix"></div>
-                            <p>{comment.body}</p>
-                            <hr />
+                            <p className="body-content comment">{comment.body}</p>
+                            <div className="col-md-12">
+                                <div className="col-md-4 col-sm-8 col-xs-12">
+                                    <VoteScoreBar votePost={votePost} obj={comment} />
+                                </div>
+                                <div className="clearfix"></div>
+                            </div>
+
                         </div>
                     ))}
+                </div>
                 </div>
             </div>
         )

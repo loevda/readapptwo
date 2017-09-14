@@ -41,7 +41,7 @@ function posts (state = {posts: [], sortBy: 'upVote', path: '/', rehydrated: fal
         case POSTS_VOTE:
             return {...state,
                 posts: sortRes(state.posts.filter((post) => {
-                    post.id !== action.post.id
+                    return post.id !== action.post.id
                 }).concat(action.post), orderBy)
             }
         default :
@@ -63,7 +63,7 @@ function post (state =  { post: {}, comments: [], sortBy: 'upVote', rehydrated: 
             return {...state, comments: sortRes(action.comments, state.sortBy) }
         case DELETE_COMMENT:
             return {...state, comments: state.comments.filter((comment) => {
-                comment.id !== action.comment.id
+                return comment.id !== action.comment.id
             })}
         case GET_ORDERED_POST_COMMENTS_BY:
             return {...state,
