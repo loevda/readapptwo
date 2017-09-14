@@ -37,7 +37,7 @@ class Post extends React.Component {
                 <PostInfo post={post} numComments={comments.length} />
                 <div className="clearfix"></div>
                 <hr />
-                <p>{post.body}</p>
+                <p className="body-content">{post.body}</p>
                 <hr />
                 <div className="col-md-12 mb20">
                     <div className="col-md-6">

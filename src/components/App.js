@@ -24,8 +24,8 @@ class App extends Component {
                     <NavBar categories={this.props.categories} />
                     <Switch>
                         <Route exact path="/" component={ListPosts}/>
-                        <Route exact path="/:category/posts" component={ListPosts}/>
-                        <Route exact path="/posts/:postId" component={Post}/>
+                        <Route exact path="/:category" component={ListPosts}/>
+                        <Route exact path="/:category/:postId" component={Post}/>
                         <Route path="*" component={NotFound} />
                     </Switch>
 

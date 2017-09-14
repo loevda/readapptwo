@@ -54,7 +54,7 @@ class ListPosts extends React.Component {
                     posts.map((post) => (
                         <div className="col-md-6" key={post.id}>
                             <h3 className="faster ft20 h100">
-                                <Link to={`/posts/${post.id}`}>
+                                <Link to={`/${post.category}/${post.id}`}>
                                     {post.title}
                                 </Link>
                             </h3>

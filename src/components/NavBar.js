@@ -43,7 +43,7 @@ class NavBar extends React.Component {
                                 </div>
                                 {this.props.categories.map((category) => (
                                     <div key={category.name} className="btn-group" role="group">
-                                        <Link to={`/${category.name}/posts`} className="btn btn-info">View posts for {capitalize(category.name)}</Link>
+                                        <Link to={`/${category.name}`} className="btn btn-info">View posts for {capitalize(category.name)}</Link>
                                     </div>
                                 ))}
                             </div>
