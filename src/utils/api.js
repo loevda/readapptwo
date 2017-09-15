@@ -75,3 +75,9 @@ export function voteComment (commentId, voteStr) {
         .then(data => data)
 }
 
+export function addComment (comment) {
+    return fetch(`${api}/comments`,
+        { headers: {...headers, 'Content-Type': 'application/json'},
+            method: 'POST', body: JSON.stringify({...comment}) })
+        .then(res => res)
+}

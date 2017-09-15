@@ -1,3 +1,20 @@
+import { v1 } from 'uuid'
+import { isString } from 'lodash'
+
+export function generateUUID() {
+    return v1().replace(/-/g, '')
+}
+
+export function simpleInputValidation(fields) {
+    let flag = true
+    for (const key of Object.keys(fields)) {
+        if (!(isString(fields[key]) && fields[key].length > 3)) {
+            flag = false
+        }
+    }
+    return flag
+}
+
 export function capitalize (str = '') {
     try {
         return typeof str !== 'string'

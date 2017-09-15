@@ -72,13 +72,10 @@ export const fetchPost = (postId, history) => dispatch => (
     PostAPI
         .fetchPost(postId, history)
         .then((post) => {
-            if (post.error) {
+            if (post.error || !post.id) {
                 history.push('/page/not/found/')
                 dispatch(fetchPostError())
             }else{
-                if(!post.id) {
-                    history.push('/page/not/found/')
-                }
                 dispatch(getPost(post))
             }
         })
@@ -182,6 +179,16 @@ export const voteComment = (commentId, voteStr) => dispatch => (
         })
 )
 
+export const commentAdd = comment => ({
+    type: ADD_COMMENT,
+    comment
+})
+
+export const addComment = (comment) => dispatch => (
+    PostAPI.addComment(comment).then((comment) => {
+        dispatch(commentAdd(comment))
+    })
+)
 
 
 

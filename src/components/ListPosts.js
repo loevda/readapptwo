@@ -9,6 +9,7 @@ import PostInfo from './PostInfo'
 import { isEqual } from 'lodash'
 import OrderSelect from './OrderSelect'
 import VoteScoreBar from './VoteScoreBar'
+import EditRemoveBar from './EditRemoveBar'
 
 class ListPosts extends React.Component {
 
@@ -28,6 +29,8 @@ class ListPosts extends React.Component {
     handleSorting(e) {
         this.props.postsOrderedBy(this.props.posts, e.target.value)
     }
+
+
 
 
     render() {
@@ -63,6 +66,9 @@ class ListPosts extends React.Component {
                             <hr />
                             <div className="col-md-4 col-sm-6">
                                 <VoteScoreBar voteObj={votePosts} obj={post} next="/"/>
+                            </div>
+                            <div className="col-md-6">
+                                <EditRemoveBar deletePost={votePosts} obj={post} next="/"/>
                             </div>
                             <div className="clearfix"></div>
                         </div>

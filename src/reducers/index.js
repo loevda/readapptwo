@@ -67,6 +67,9 @@ function post (state =  { post: {}, comments: [], sortBy: 'upVote', rehydrated: 
             return {...state, comments: state.comments.filter((comment) => {
                 return comment.id !== action.comment.id
             })}
+        case ADD_COMMENT:
+            return {...state,
+                comments: sortRes(state.comments.concat(action.comment), state.sortBy)}
         case GET_ORDERED_POST_COMMENTS_BY:
             return {...state,
                 comments: sortRes(action.comments, action.sortBy),
