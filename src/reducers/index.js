@@ -60,13 +60,14 @@ function post (state =  { post: {}, comments: [], sortBy: 'upVote', rehydrated: 
         case POST_VOTE:
             return {...state, post: action.post }
         case DELETE_POST:
-            return {...state, post: {}}
+            return {...state, post: {}, comments: []}
         case GET_POST_COMMENTS:
             return {...state, comments: sortRes(action.comments, state.sortBy) }
         case DELETE_COMMENT:
-            return {...state, comments: state.comments.filter((comment) => {
-                return comment.id !== action.comment.id
-            })}
+            return {...state,
+                comments: sortRes(state.comments.filter((comment) => {
+                    return comment.id != action.commentId
+                }), state.sortBy)}
         case ADD_COMMENT:
             return {...state,
                 comments: sortRes(state.comments.concat(action.comment), state.sortBy)}

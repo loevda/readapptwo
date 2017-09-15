@@ -190,6 +190,21 @@ export const addComment = (comment) => dispatch => (
     })
 )
 
+export const deleteComment = (commentId) => ({
+    type: DELETE_COMMENT,
+    commentId
+})
+
+export const fetchCommentDelete = (commentId) => dispatch => (
+    PostAPI
+        .deletePost(commentId)
+        .then((post) => {
+        console.log(post)
+            dispatch(deleteComment(commentId))
+        })
+)
+
+
 
 
 

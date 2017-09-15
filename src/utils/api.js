@@ -21,7 +21,9 @@ export function fetchPost (postId, history) {
 export function fetchPostComments (postId) {
     return fetch(`${api}/posts/${postId}/comments`, { headers })
         .then(res => res.json())
-        .then(data => data)
+        .then(data => data.filter((comment) => {
+            return !comment.deleted
+        }))
 }
 
 export function fetchPosts () {
@@ -78,6 +80,13 @@ export function voteComment (commentId, voteStr) {
 export function addComment (comment) {
     return fetch(`${api}/comments`,
         { headers: {...headers, 'Content-Type': 'application/json'},
-            method: 'POST', body: JSON.stringify({...comment}) })
+            method: 'POST', body: JSON.stringify(comment) })
+        .then(res => res.json())
+        .then(data => data)
+}
+
+export function deleteComment (commentId) {
+    return fetch(`${api}/comments/${commentId}`,
+        { headers: {...headers, 'Content-Type': 'application/json'}, method: 'DELETE' })
         .then(res => res)
 }

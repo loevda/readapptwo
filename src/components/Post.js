@@ -3,12 +3,21 @@
  */
 import React from 'react'
 import { connect } from 'react-redux'
-import { fetchPost, fetchPostComments, votePost, orderPostCommentsBy, fetchPostDelete, voteComment, addComment } from '../actions'
+import {
+    fetchPost,
+    fetchPostComments,
+    votePost,
+    orderPostCommentsBy,
+    fetchPostDelete,
+    voteComment,
+    addComment,
+    fetchCommentDelete
+} from '../actions'
 import VoteScoreBar from './VoteScoreBar'
 import EditRemoveBar from './EditRemoveBar'
 import OrderSelect from './OrderSelect'
 import PostInfo from './PostInfo'
-import { capitalize, formatDate, simpleInputValidation } from '../utils/helpers'
+import { capitalize, formatDate, simpleInputValidation, generateUUID } from '../utils/helpers'
 import Modal from 'react-modal'
 import { withRouter } from 'react-router-dom'
 
@@ -67,22 +76,39 @@ class Post extends React.Component {
         this.props.orderPostCommentsBy(this.props.comments, e.target.value)
     }
 
-    handleDelete(e) {
+    handleDeletePost(postId) {
+        //param needed just for reuse of component
         const { post, history } = this.props
         this.props.fetchPostDelete(post.id, history)
     }
+
+    handleDeleteComment(commentId) {
+        this.props.fetchCommentDelete(commentId)
+    }
+
 
     postComment(e) {
         e.preventDefault()
         const commentObj = {
             author: this.refs['comment-author'].value,
-            comment: this.refs['comment-text'].value
+            body: this.refs['comment-text'].value
         }
 
         if (!simpleInputValidation(commentObj)) {
-            alert('Pleae fill both the author and comment fields with a minimum of 5 characters.')
+            alert('Please fill both the author and comment fields with a minimum of 5 characters.')
         }else{
+            const updatedComment = {
+                ...commentObj,
+                id: generateUUID(),
+                parentId: this.props.parentId,
+                timestamp: new Date().getTime(),
+                voteScore: 1,
+                deleted: false,
+                parentDeleted: false
+            }
+            console.log(updatedComment)
             this.setState({isCommentModalOpen: false})
+            this.props.addComment(updatedComment)
         }
 
 
@@ -105,7 +131,7 @@ class Post extends React.Component {
                         <VoteScoreBar voteObj={votePost} obj={post} />
                     </div>
                     <div className="col-md-6">
-                        <EditRemoveBar deletePost={(e) => this.handleDelete(e)} obj={post} />
+                        <EditRemoveBar deleteObj={(postId) => this.handleDeletePost(postId)} obj={post} />
                     </div>
                 </div>
 
@@ -188,6 +214,9 @@ class Post extends React.Component {
                                     <div className="col-md-4 col-sm-8 col-xs-12">
                                         <VoteScoreBar voteObj={voteComment} obj={comment} />
                                     </div>
+                                    <div className="col-md-4 col-sm-8 col-xs-12">
+                                        <EditRemoveBar deleteObj={(commentId) => this.handleDeleteComment(comment.id)} obj={comment} />
+                                    </div>
                                     <div className="clearfix"></div>
                                 </div>
 
@@ -219,7 +248,8 @@ const mapDispatchToProps = (dispatch) => {
         fetchPostDelete: (postId, history) => dispatch(fetchPostDelete(postId, history)),
         orderPostCommentsBy: (comments, sortBy) => dispatch(orderPostCommentsBy(comments, sortBy)),
         voteComment: (commentId, voteStr) => dispatch(voteComment(commentId, voteStr)),
-        addComment: (comment) => dispatch(addComment(comment))
+        addComment: (comment) => dispatch(addComment(comment)),
+        fetchCommentDelete: (commentId) => dispatch(fetchCommentDelete(commentId))
     }
 }
 
