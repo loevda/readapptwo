@@ -15,6 +15,7 @@ export const DELETE_POST = 'DELETE_POST'
 export const EDIT_POST = 'EDIT_POST'
 export const GET_CATEGORIES = 'GET_CATEGORIES'
 export const POST_VOTE = 'POST_VOTE'
+export const POST_ERROR = 'POST_ERROR'
 export const POSTS_VOTE = 'POSTS_VOTE'
 export const ADD_COMMENT = 'ADD_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
@@ -63,11 +64,23 @@ export const getPost = post => ({
     post
 })
 
-export const fetchPost = (postId) => dispatch => (
+export const fetchPostError = () => ({
+    type: POST_ERROR
+})
+
+export const fetchPost = (postId, history) => dispatch => (
     PostAPI
-        .fetchPost(postId)
+        .fetchPost(postId, history)
         .then((post) => {
-            dispatch(getPost(post))
+            if (post.error) {
+                history.push('/page/not/found/')
+                dispatch(fetchPostError())
+            }else{
+                if(!post.id) {
+                    history.push('/page/not/found/')
+                }
+                dispatch(getPost(post))
+            }
         })
 )
 

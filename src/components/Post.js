@@ -9,15 +9,17 @@ import EditRemoveBar from './EditRemoveBar'
 import OrderSelect from './OrderSelect'
 import PostInfo from './PostInfo'
 import { capitalize, formatDate } from '../utils/helpers'
-import { Link, withRouter} from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 
 class Post extends React.Component {
 
     componentDidMount() {
-        let postId = this.props.match.params.postId
-        this.props.fetchPost(postId)
+        const postId = this.props.match.params.postId
+        const { history } = this.props
+        this.props.fetchPost(postId, history)
         this.props.fetchPostComments(postId)
     }
+
 
     handleSorting (e) {
         this.props.orderPostCommentsBy(this.props.comments, e.target.value)
@@ -32,6 +34,7 @@ class Post extends React.Component {
         const { post, comments, votePost, sortBy, voteComment } = this.props
 
         return (
+
             <div className="container">
                 <h1 className="faster">{post.title}</h1>
                 <PostInfo post={post} numComments={comments.length} />
@@ -106,7 +109,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchPost: (postId) => dispatch(fetchPost(postId)),
+        fetchPost: (postId, history) => dispatch(fetchPost(postId, history)),
         fetchPostComments: (postId) => dispatch(fetchPostComments(postId)),
         votePost: (postId, strVote) => dispatch(votePost(postId, strVote)),
         fetchPostDelete: (postId, history) => dispatch(fetchPostDelete(postId, history)),

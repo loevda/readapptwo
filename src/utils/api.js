@@ -12,7 +12,7 @@ const headers = {
     'Authorization': token
 }
 
-export function fetchPost (postId) {
+export function fetchPost (postId, history) {
     return fetch(`${api}/posts/${postId}`, { headers })
         .then(res => res.json())
         .then(data => data)
@@ -74,5 +74,4 @@ export function voteComment (commentId, voteStr) {
         .then(res => res.json())
         .then(data => data)
 }
-
 

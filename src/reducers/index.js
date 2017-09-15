@@ -16,6 +16,7 @@ import {
     EDIT_POST,
     GET_CATEGORIES,
     POST_VOTE,
+    POST_ERROR,
     POSTS_VOTE,
     ADD_COMMENT,
     DELETE_COMMENT,
@@ -50,7 +51,7 @@ function posts (state = {posts: [], sortBy: 'upVote', path: '/', rehydrated: fal
     }
 }
 
-function post (state =  { post: {}, comments: [], sortBy: 'upVote', rehydrated: false}, action) {
+function post (state =  { post: {}, comments: [], sortBy: 'upVote', rehydrated: false }, action) {
     switch (action.type) {
         case GET_POST:
             return {...state, post: action.post,
@@ -59,7 +60,7 @@ function post (state =  { post: {}, comments: [], sortBy: 'upVote', rehydrated: 
         case POST_VOTE:
             return {...state, post: action.post }
         case DELETE_POST:
-            return {...state, post: {...state.post, deleted: true}}
+            return {...state, post: {}}
         case GET_POST_COMMENTS:
             return {...state, comments: sortRes(action.comments, state.sortBy) }
         case DELETE_COMMENT:
@@ -71,6 +72,8 @@ function post (state =  { post: {}, comments: [], sortBy: 'upVote', rehydrated: 
                 comments: sortRes(action.comments, action.sortBy),
                 sortBy: action.sortBy
             }
+        case POST_ERROR:
+            return {...state, post: {}, comments: []}
         case COMMENT_VOTE:
             return {
                 ...state,

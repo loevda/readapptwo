@@ -12,10 +12,11 @@ import VoteScoreBar from './VoteScoreBar'
 
 class ListPosts extends React.Component {
 
-    componentDidMount() {
+    componentWillMount() {
         let category = this.props.match.params.category
         category ? this.props.fetchCategoryPosts(category, this.props.match.params.category) : this.props.fetchPosts()
     }
+
 
     componentDidUpdate(prevProps, prevState) {
         if (!isEqual(this.props, prevProps)) {
