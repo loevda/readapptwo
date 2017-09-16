@@ -93,3 +93,9 @@
   border-bottom: 1px solid #acacac;
   padding-bottom: 20px;
 }
+
+.post-list-item {
+  padding-bottom: 30px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #acacac;
+}

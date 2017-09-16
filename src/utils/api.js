@@ -12,6 +12,14 @@ const headers = {
     'Authorization': token
 }
 
+export function addPost (post) {
+    return fetch(`${api}/posts`,
+        { headers: {...headers, 'Content-Type': 'application/json'},
+            method: 'POST', body: JSON.stringify(post) })
+        .then(res => res.json())
+        .then(data => data)
+}
+
 export function fetchPost (postId, history) {
     return fetch(`${api}/posts/${postId}`, { headers })
         .then(res => res.json())
@@ -32,12 +40,6 @@ export function fetchPosts () {
         .then(data => data.filter((post) => {
             return !post.deleted
         }))
-}
-
-export function fetchPostsComments (postId) {
-    return fetch(`${api}/posts/${postId}`, { headers })
-        .then(res => res.json())
-        .then(data => data)
 }
 
 export function deletePost (postId) {

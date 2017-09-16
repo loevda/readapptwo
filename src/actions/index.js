@@ -33,6 +33,20 @@ export const fetchCategories = () => dispatch => (
         })
 )
 
+export const postAdd = (post) => ({
+        type: ADD_POST,
+        post
+    }
+)
+
+export const addPost= (post) => dispatch => (
+    PostAPI.addPost(post)
+        .then((post) => {
+            dispatch(postAdd(post))
+        })
+)
+
+
 export const getPosts = posts => ({
     type: GET_POSTS,
     posts
@@ -45,6 +59,22 @@ export const fetchPosts = () => dispatch => (
             dispatch(getPosts(posts))
     })
 )
+
+export const getAllComments = (comments) => ({
+    type: GET_COMMENTS,
+        comments
+})
+
+
+export const fetchAllComments = (posts) => dispatch => {
+    for (let post of posts) {
+        PostAPI
+            .fetchPostComments(post.id)
+            .then((comments) => {
+                dispatch(getAllComments(comments))
+            })
+    }
+}
 
 export const getComments = comments => ({
     type: GET_COMMENTS,

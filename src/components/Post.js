@@ -17,39 +17,26 @@ import VoteScoreBar from './VoteScoreBar'
 import EditRemoveBar from './EditRemoveBar'
 import OrderSelect from './OrderSelect'
 import PostInfo from './PostInfo'
-import { capitalize, formatDate, simpleInputValidation, generateUUID } from '../utils/helpers'
+import Comment from './Comment'
+import {
+    capitalize,
+    formatDate,
+    simpleInputValidation,
+    generateUUID,
+    customStyles
+} from '../utils/helpers'
 import Modal from 'react-modal'
 import { withRouter } from 'react-router-dom'
 
 
-const customStyles = {
-    overlay : {
-        position          : 'fixed',
-        top               : 0,
-        left              : 0,
-        right             : 0,
-        bottom            : 0,
-        backgroundColor   : 'rgba(255, 255, 255, 0.75)',
-        zIndex: '1000'
-    },
-    content : {
-        top                   : '50%',
-        left                  : '50%',
-        right                 : 'auto',
-        bottom                : 'auto',
-        marginRight           : '-50%',
-        transform             : 'translate(-50%, -50%)',
-        border                : '1px solid black',
-        display               : 'block',
-        padding               : '20px',
-        backgroundColor       : 'white'
-    }
-};
+
 
 class Post extends React.Component {
 
     state = {
-        isCommentModalOpen: false
+        isCommentModalOpen: false,
+        showAuthor: false,
+        editableComment: {}
     }
 
     openCommentModal =  () => {
@@ -100,18 +87,15 @@ class Post extends React.Component {
             const updatedComment = {
                 ...commentObj,
                 id: generateUUID(),
-                parentId: this.props.parentId,
+                parentId: this.props.post.id,
                 timestamp: new Date().getTime(),
                 voteScore: 1,
                 deleted: false,
                 parentDeleted: false
             }
-            console.log(updatedComment)
             this.setState({isCommentModalOpen: false})
             this.props.addComment(updatedComment)
         }
-
-
     }
 
     render() {
@@ -163,33 +147,41 @@ class Post extends React.Component {
                         >
                             <div className="content">
                                 <div className="content-inner p20">
-                                <div className="row">
-                                    <h3>Post a comment</h3>
-                                    <form>
-                                        <div className="form-group">
-                                             <input type="text" required
-                                                    className="form-control"
-                                                    id="comment-author"
-                                                    ref="comment-author"
-                                                    name="comment-author"
-                                                    placeholder="Your name" />
-                                        </div>
-                                        <div className="form-group">
+                                    <div className="row">
+                                        <h3>Post a comment</h3>
+                                        <form>
+                                            <input type="hidden"
+                                                   name="form-comment-id"
+                                                   ref="form-comment-id"
+                                                   id="form-comment-id"
+                                                   value=""
+                                            />
+                                            <div className="form-group">
+                                                <input type="text" required
+                                                       className="form-control"
+                                                       id="comment-author"
+                                                       ref="comment-author"
+                                                       name="comment-author"
+                                                       placeholder="Your name"
+                                                       disabled={this.state.showAuthor}
+                                                />
+                                            </div>
+                                            <div className="form-group">
                                             <textarea required
-                                                ref="comment-text"
-                                                type="email"
+                                                      ref="comment-text"
+                                                      type="email"
                                                       className="form-control"
                                                       cols="40"
                                                       rows="8"
                                                       id="comment-text" name="comment-text" placeholder="Write comment">
                                             </textarea>
-                                        </div>
+                                            </div>
 
-                                        <button
-                                            onClick={(e) => this.postComment(e)}
-                                            type="submit" className="btn btn-default">Submit</button>
-                                    </form>
-                                </div>
+                                            <button
+                                                onClick={(e) => this.postComment(e)}
+                                                type="submit" className="btn btn-default">Submit</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </Modal>

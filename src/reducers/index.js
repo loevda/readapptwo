@@ -2,6 +2,7 @@
  * Created by david2099 on 10/09/17.
  */
 import { combineReducers } from 'redux';
+import { uniqBy } from 'lodash'
 
 import {
     GET_POSTS,
@@ -40,6 +41,11 @@ function posts (state = {posts: [], sortBy: 'upVote', path: '/', rehydrated: fal
                 posts: sortRes(action.posts, action.sortBy),
                 sortBy: action.sortBy
             }
+        case ADD_POST:
+            console.log(action.post)
+            return {...state,
+                posts: sortRes(state.posts.push(action.post), action.sortBy)
+            }
         case POSTS_VOTE:
             return {...state,
                 posts: sortRes(state.posts.filter((post) => {
@@ -66,7 +72,7 @@ function post (state =  { post: {}, comments: [], sortBy: 'upVote', rehydrated: 
         case DELETE_COMMENT:
             return {...state,
                 comments: sortRes(state.comments.filter((comment) => {
-                    return comment.id != action.commentId
+                    return comment.id !== action.commentId
                 }), state.sortBy)}
         case ADD_COMMENT:
             return {...state,
@@ -93,7 +99,7 @@ function post (state =  { post: {}, comments: [], sortBy: 'upVote', rehydrated: 
 function comments (state = [], action) {
     switch (action.type) {
         case GET_COMMENTS:
-            return action.comments
+            return uniqBy(state.concat(action.comments), 'id')
         default:
             return state
     }
