@@ -64,7 +64,7 @@ class Post extends React.Component {
     }
 
     handleDeletePost(postId) {
-        //param needed just for reuse of component
+        //param needed just for reuse of component in listPosts
         const { post, history } = this.props
         this.props.fetchPostDelete(post.id, history)
     }

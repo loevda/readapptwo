@@ -10,6 +10,7 @@ import {
     postsOrderedBy,
     fetchAllComments,
     fetchCategories,
+    fetchPostDelete,
     addPost
 } from '../actions'
 import { Link, withRouter } from 'react-router-dom'
@@ -37,6 +38,10 @@ class ListPosts extends React.Component {
 
     newPost = (e) => {
         this.setState({ isCommentModalOpen: true })
+    }
+
+    handleDeletePost(postId) {
+        this.props.fetchPostDelete(postId)
     }
 
     submtiPost (e) {
@@ -75,7 +80,7 @@ class ListPosts extends React.Component {
         if (!isEqual(this.props, prevProps)) {
             const category = this.props.match.params.category
             category ? this.props.fetchCategoryPosts(category, this.props.match.params.category) : this.props.fetchPosts()
-            this.props.fetchAllComments(this.props.posts)
+            //this.props.fetchAllComments(this.props.posts)
         }
     }
 
@@ -118,7 +123,7 @@ class ListPosts extends React.Component {
                                 <VoteScoreBar voteObj={votePosts} obj={post} next="/"/>
                             </div>
                             <div className="col-md-6">
-                                <EditRemoveBar deletePost={votePosts} obj={post} next="/"/>
+                                <EditRemoveBar deleteObj={(postId) => this.handleDeletePost(post.id)} obj={post} next="/"/>
                             </div>
                             <div className="clearfix"></div>
                         </div>
@@ -219,7 +224,8 @@ const mapDispatchToProps = (dispatch) => {
         postsOrderedBy: (posts, sortBy) => dispatch(postsOrderedBy(posts, sortBy)),
         fetchAllComments: (posts) => dispatch(fetchAllComments(posts)),
         fetchCategories: () => dispatch(fetchCategories()),
-        addPost: (post) => dispatch(addPost(post))
+        addPost: (post) => dispatch(addPost(post)),
+        fetchPostDelete: (postId) => dispatch(fetchPostDelete(postId))
     }
 }
 

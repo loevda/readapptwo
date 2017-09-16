@@ -20,6 +20,7 @@ export const POSTS_VOTE = 'POSTS_VOTE'
 export const ADD_COMMENT = 'ADD_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const COMMENT_VOTE = 'COMMENT_VOTE'
+export const DELETE_POST_FROM_LIST = 'DELETE_POST_FROM_LIST'
 
 export const getCategories = categories => ({
     type: GET_CATEGORIES,
@@ -67,13 +68,14 @@ export const getAllComments = (comments) => ({
 
 
 export const fetchAllComments = (posts) => dispatch => {
-    for (let post of posts) {
+    console.log(typeof posts)
+    posts.forEach ((post) => {
         PostAPI
             .fetchPostComments(post.id)
             .then((comments) => {
                 dispatch(getAllComments(comments))
             })
-    }
+    })
 }
 
 export const getComments = comments => ({
@@ -129,12 +131,21 @@ export const deletePost = () => ({
     type: DELETE_POST
 })
 
-export const fetchPostDelete = (postId, history) => dispatch => (
+export const deletePostFromList = (postId) => ({
+    type: DELETE_POST_FROM_LIST,
+    postId
+})
+
+export const fetchPostDelete = (postId, history = null) => dispatch => (
     PostAPI
         .deletePost(postId)
         .then((post) => {
-            history.push('/')
-            dispatch(deletePost())
+            if(history) {
+                history.push('/')
+                dispatch(deletePost())
+            }else{
+                dispatch(deletePostFromList(postId))
+            }
         })
 )
 

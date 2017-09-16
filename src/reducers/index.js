@@ -21,7 +21,8 @@ import {
     POSTS_VOTE,
     ADD_COMMENT,
     DELETE_COMMENT,
-    COMMENT_VOTE
+    COMMENT_VOTE,
+    DELETE_POST_FROM_LIST
 } from '../actions'
 
 import { sortRes } from '../utils/helpers'
@@ -51,6 +52,13 @@ function posts (state = {posts: [], sortBy: 'upVote', path: '/', rehydrated: fal
                 posts: sortRes(state.posts.filter((post) => {
                     return post.id !== action.post.id
                 }).concat(action.post), orderBy)
+            }
+        case DELETE_POST_FROM_LIST:
+            return {
+                ...state,
+                posts: sortRes(state.posts.filter((post) => {
+                    return post.id !== action.postId
+                }), orderBy)
             }
         default :
             return state
