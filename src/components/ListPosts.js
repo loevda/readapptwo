@@ -29,10 +29,10 @@ import {
 class ListPosts extends React.Component {
 
     state = {
-        isCommentModalOpen: false
+        isPostModalOpen: false
     }
 
-    closeCommentModal = () => {
+    closePostModal = () => {
         this.setState({ isCommentModalOpen: false })
         this.props.currentEditablePost(null)
     }
@@ -43,7 +43,7 @@ class ListPosts extends React.Component {
 
     editPost = (e, post) => {
         this.props.currentEditablePost(post)
-        this.setState({ isCommentModalOpen: true })
+        this.setState({ isPostModalOpen: true })
     }
 
     handleDeletePost(postId) {
@@ -68,7 +68,7 @@ class ListPosts extends React.Component {
                     title: postObj.title,
                     body: postObj.body
                 }
-                this.setState({isCommentModalOpen: false})
+                this.setState({isPostModalOpen: false})
                 this.props.fetchEditPost(this.props.editingPost.id, updPost)
             } else {
                 const updatedPost = {
@@ -76,7 +76,7 @@ class ListPosts extends React.Component {
                     id: generateUUID(),
                     timestamp: new Date().getTime()
                 }
-                this.setState({isCommentModalOpen: false})
+                this.setState({isPostModalOpen: false})
                 this.props.addPost(updatedPost)
             }
         }
@@ -155,8 +155,8 @@ class ListPosts extends React.Component {
                 <Modal
                     className='modal'
                     overlayClassName='overlay'
-                    isOpen={this.state.isCommentModalOpen}
-                    onRequestClose={this.closeCommentModal}
+                    isOpen={this.state.isPostModalOpen}
+                    onRequestClose={this.closePostModal}
                     contentLabel='Modal'
                     style={customStyles}
                 >

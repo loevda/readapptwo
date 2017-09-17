@@ -9,9 +9,12 @@ import {
     votePost,
     orderPostCommentsBy,
     fetchPostDelete,
+    fetchEditPostView,
     voteComment,
     addComment,
-    fetchCommentDelete
+    fetchCommentDelete,
+    fetchEditComment,
+    currentEditableComment
 } from '../actions'
 import VoteScoreBar from './VoteScoreBar'
 import EditRemoveBar from './EditRemoveBar'
@@ -35,8 +38,7 @@ class Post extends React.Component {
 
     state = {
         isCommentModalOpen: false,
-        showAuthor: false,
-        editableComment: {}
+        isPostModalOpen: false,
     }
 
     openCommentModal =  () => {
@@ -45,9 +47,43 @@ class Post extends React.Component {
         })
     }
 
+    editComment = (e, comment) => {
+        this.props.currentEditableComment(comment)
+        this.setState({
+            isCommentModalOpen: true
+        })
+    }
+
+    editPost = (e, post) => {
+        this.setState({
+            isPostModalOpen: true
+        })
+    }
+
+    submtiPost (e) {
+        e.preventDefault()
+        const postObj = {
+            title: this.refs['post-title'].value,
+            body: this.refs['post-text'].value
+        }
+        if (!simpleInputValidation(postObj)) {
+            alert('Please fill all fields with a minimum of 5 characters.')
+        }else{
+            this.setState({isPostModalOpen: false})
+            this.props.fetchEditPostView(this.props.post.id, postObj)
+        }
+    }
+
     closeCommentModal = () => {
         this.setState({
             isCommentModalOpen: false
+        })
+        this.props.currentEditableComment(null)
+    }
+
+    closePostModal = () => {
+        this.setState({
+            isPostModalOpen: false
         })
     }
 
@@ -84,22 +120,28 @@ class Post extends React.Component {
         if (!simpleInputValidation(commentObj)) {
             alert('Please fill both the author and comment fields with a minimum of 5 characters.')
         }else{
-            const updatedComment = {
-                ...commentObj,
-                id: generateUUID(),
-                parentId: this.props.post.id,
-                timestamp: new Date().getTime(),
-                voteScore: 1,
-                deleted: false,
-                parentDeleted: false
+            if (this.props.editingComment) {
+                this.props.fetchEditComment(this.props.editingComment.id,
+                    {body: commentObj.body})
+            }else {
+                const updatedComment = {
+                    ...commentObj,
+                    id: generateUUID(),
+                    parentId: this.props.post.id,
+                    timestamp: new Date().getTime(),
+                    voteScore: 1,
+                    deleted: false,
+                    parentDeleted: false
+                }
+
+                this.props.addComment(updatedComment)
             }
             this.setState({isCommentModalOpen: false})
-            this.props.addComment(updatedComment)
         }
     }
 
     render() {
-        const { post, comments, votePost, sortBy, voteComment } = this.props
+        const { post, comments, votePost, sortBy, voteComment, editingComment } = this.props
 
         return (
 
@@ -115,7 +157,10 @@ class Post extends React.Component {
                         <VoteScoreBar voteObj={votePost} obj={post} />
                     </div>
                     <div className="col-md-6">
-                        <EditRemoveBar deleteObj={(postId) => this.handleDeletePost(postId)} obj={post} />
+                        <EditRemoveBar
+                            deleteObj={(postId) => this.handleDeletePost(postId)}
+                            obj={post}
+                            editObj={(e, obj) => this.editPost(e, post)} />
                     </div>
                 </div>
 
@@ -148,22 +193,17 @@ class Post extends React.Component {
                             <div className="content">
                                 <div className="content-inner p20">
                                     <div className="row">
-                                        <h3>Post a comment</h3>
+                                        <h3>Comment form</h3>
                                         <form>
-                                            <input type="hidden"
-                                                   name="form-comment-id"
-                                                   ref="form-comment-id"
-                                                   id="form-comment-id"
-                                                   value=""
-                                            />
-                                            <div className="form-group">
+                                            <div className={editingComment ? 'form-group hidden' : 'form-group'}>
                                                 <input type="text" required
                                                        className="form-control"
                                                        id="comment-author"
                                                        ref="comment-author"
                                                        name="comment-author"
                                                        placeholder="Your name"
-                                                       disabled={this.state.showAuthor}
+                                                       defaultValue={editingComment ? editingComment.author : ''}
+                                                       disabled={editingComment ? 'disabled' : ''}
                                                 />
                                             </div>
                                             <div className="form-group">
@@ -173,12 +213,59 @@ class Post extends React.Component {
                                                       className="form-control"
                                                       cols="40"
                                                       rows="8"
-                                                      id="comment-text" name="comment-text" placeholder="Write comment">
+                                                      id="comment-text" name="comment-text" placeholder="Write comment"
+                                                      defaultValue={editingComment ? editingComment.body : ''}
+                                            >
                                             </textarea>
                                             </div>
 
                                             <button
                                                 onClick={(e) => this.postComment(e)}
+                                                type="submit" className="btn btn-default">Submit</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </Modal>
+                        <Modal
+                            className='modal'
+                            overlayClassName='overlay'
+                            isOpen={this.state.isPostModalOpen}
+                            onRequestClose={this.closePostModal}
+                            contentLabel='Modal'
+                            style={customStyles}
+                        >
+                            <div className="content">
+                                <div className="content-inner p20">
+                                    <div className="row">
+                                        <h3>Edit post</h3>
+                                        <form>
+                                            <div className="form-group">
+                                                <input type="text" required
+                                                       className="form-control"
+                                                       id="post-title"
+                                                       ref="post-title"
+                                                       name="post-title"
+                                                       placeholder="Title"
+                                                       defaultValue={post.title}
+                                                />
+                                            </div>
+                                            <div className="form-group">
+                                            <textarea required
+                                                      ref="post-text"
+                                                      className="form-control"
+                                                      cols="40"
+                                                      rows="8"
+                                                      id="category-text"
+                                                      name="category-text"
+                                                      placeholder="Write post"
+                                                      defaultValue={post.body}>
+
+                                            </textarea>
+                                            </div>
+
+                                            <button
+                                                onClick={(e) => this.submtiPost(e)}
                                                 type="submit" className="btn btn-default">Submit</button>
                                         </form>
                                     </div>
@@ -207,11 +294,14 @@ class Post extends React.Component {
                                         <VoteScoreBar voteObj={voteComment} obj={comment} />
                                     </div>
                                     <div className="col-md-4 col-sm-8 col-xs-12">
-                                        <EditRemoveBar deleteObj={(commentId) => this.handleDeleteComment(comment.id)} obj={comment} />
+                                        <EditRemoveBar
+                                            deleteObj={(commentId) => this.handleDeleteComment(comment.id)}
+                                            obj={comment}
+                                            editObj={(e, obj) => this.editComment(e, comment)}
+                                        />
                                     </div>
                                     <div className="clearfix"></div>
                                 </div>
-
                             </div>
                         ))}
                     </div>
@@ -228,7 +318,8 @@ const mapStateToProps = (state) => {
     return {
         post: state.post.post,
         comments: state.post.comments,
-        sortBy: state.post.sortBy
+        sortBy: state.post.sortBy,
+        editingComment: state.post.editingComment
     }
 }
 
@@ -241,7 +332,10 @@ const mapDispatchToProps = (dispatch) => {
         orderPostCommentsBy: (comments, sortBy) => dispatch(orderPostCommentsBy(comments, sortBy)),
         voteComment: (commentId, voteStr) => dispatch(voteComment(commentId, voteStr)),
         addComment: (comment) => dispatch(addComment(comment)),
-        fetchCommentDelete: (commentId) => dispatch(fetchCommentDelete(commentId))
+        fetchCommentDelete: (commentId) => dispatch(fetchCommentDelete(commentId)),
+        currentEditableComment: (comment) => dispatch(currentEditableComment(comment)),
+        fetchEditPostView: (postId, post) => dispatch(fetchEditPostView(postId, post)),
+        fetchEditComment: (commentId, comment) => dispatch(fetchEditComment(commentId, comment))
     }
 }
 

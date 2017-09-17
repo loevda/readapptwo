@@ -94,3 +94,11 @@ export function deleteComment (commentId) {
         { headers: {...headers, 'Content-Type': 'application/json'}, method: 'DELETE' })
         .then(res => res)
 }
+
+export function editComment (commentId, comment) {
+    return fetch(`${api}/comments/${commentId}`,
+        { headers: {...headers, 'Content-Type': 'application/json'},
+            method: 'PUT', body: JSON.stringify(comment) })
+        .then(res => res.json())
+        .then(data => data)
+}

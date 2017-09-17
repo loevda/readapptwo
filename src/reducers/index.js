@@ -3,27 +3,29 @@
  */
 import { combineReducers } from 'redux';
 import {
+    GET_CATEGORIES,
     GET_POSTS,
     GET_POST,
     GET_POST_COMMENTS,
     GET_ORDERED_POSTS_BY,
     GET_ORDERED_POST_COMMENTS_BY,
     DELETE_POST,
-    GET_COMMENTS,
     ADD_POST,
     EDIT_POST,
-    GET_CATEGORIES,
+    EDIT_POST_VIEW,
     POST_VOTE,
     POST_ERROR,
     POSTS_VOTE,
     ADD_COMMENT,
     DELETE_COMMENT,
+    EDIT_COMMENT,
     COMMENT_VOTE,
     DELETE_POST_FROM_LIST,
     CURRENT_EDITABLE_POST,
     CURRENT_EDITABLE_COMMENT
 } from '../actions'
 import { sortRes } from '../utils/helpers'
+import { uniqBy } from 'lodash'
 
 const initialPostsState = {
     posts: [],
@@ -73,7 +75,15 @@ function posts (state = initialPostsState, action) {
     }
 }
 
-function post (state =  { post: {}, comments: [], sortBy: 'upVote', rehydrated: false }, action) {
+const initialPostState = {
+    post: {},
+    comments: [],
+    sortBy: 'upVote',
+    editingComment: null,
+    rehydrated: false
+}
+
+function post (state =  initialPostState, action) {
     switch (action.type) {
         case GET_POST:
             return {...state, post: action.post,
@@ -93,6 +103,14 @@ function post (state =  { post: {}, comments: [], sortBy: 'upVote', rehydrated: 
         case ADD_COMMENT:
             return {...state,
                 comments: sortRes(state.comments.concat(action.comment), state.sortBy)}
+        case EDIT_COMMENT:
+            return {
+                ...state,
+                editingComment: null,
+                comments: sortRes(state.comments.map((comment) => {
+                    return comment.id === action.comment.id ? action.comment: comment
+                }), state.sortBy)
+            }
         case GET_ORDERED_POST_COMMENTS_BY:
             return {...state,
                 comments: sortRes(action.comments, action.sortBy),
@@ -107,6 +125,10 @@ function post (state =  { post: {}, comments: [], sortBy: 'upVote', rehydrated: 
                     return comment.id !== action.comment.id
                 }).concat(action.comment), state.sortBy)
             }
+        case CURRENT_EDITABLE_COMMENT:
+            return {...state, editingComment: action.comment}
+        case EDIT_POST_VIEW:
+            return {...state, post: action.post}
         default:
             return state
     }
