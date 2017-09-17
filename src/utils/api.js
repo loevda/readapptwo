@@ -34,8 +34,9 @@ export function fetchPostComments (postId) {
         }))
 }
 
-export function fetchPosts () {
-    return fetch(`${api}/posts`, { headers })
+export function fetchPosts (path) {
+    const url = (path === '/' ? `${api}/posts` : `${api}/${path}/posts`)
+    return fetch(url, { headers })
         .then(res => res.json())
         .then(data => data.filter((post) => {
             return !post.deleted

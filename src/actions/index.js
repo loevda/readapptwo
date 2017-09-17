@@ -9,7 +9,6 @@ export const GET_POST = 'GET_POST'
 export const GET_POST_COMMENTS = 'GET_POST_COMMENTS'
 export const GET_ORDERED_POST_COMMENTS_BY = 'GET_ORDERED_POST_COMMENTS_BY'
 export const GET_COMMENTS = 'GET_COMMENTS'
-export const GET_CATEGORY_POSTS = 'GET_CATEGORY_POSTS'
 export const ADD_POST = 'ADD_POST'
 export const DELETE_POST = 'DELETE_POST'
 export const EDIT_POST = 'EDIT_POST'
@@ -26,6 +25,7 @@ export const getCategories = categories => ({
     type: GET_CATEGORIES,
     categories
 })
+
 
 export const fetchCategories = () => dispatch => (
     PostAPI.fetchCategories()
@@ -48,16 +48,28 @@ export const addPost= (post) => dispatch => (
 )
 
 
-export const getPosts = posts => ({
+export const getPosts = (posts, path) => ({
     type: GET_POSTS,
-    posts
+    posts,
+    path
 })
 
-export const fetchPosts = () => dispatch => (
-    PostAPI
-        .fetchPosts()
+export const fetchPosts = (path) => dispatch => (
+    PostAPI.fetchPosts(path)
         .then((posts) => {
-            dispatch(getPosts(posts))
+            const getPostsComments = posts.map(post => {
+                return PostAPI.fetchPostComments(post.id).then((data) => data)
+            })
+            const res =  Promise.all(getPostsComments).then(comments => {
+                return comments.map((comment, index) => {
+                    return {...posts[index], comments: comment.length}
+                })
+            }).then((posts) => {
+                return posts
+            })
+            return res
+        }).then((posts) => {
+            dispatch(getPosts(posts, path))
     })
 )
 
@@ -68,7 +80,6 @@ export const getAllComments = (comments) => ({
 
 
 export const fetchAllComments = (posts) => dispatch => {
-    console.log(typeof posts)
     posts.forEach ((post) => {
         PostAPI
             .fetchPostComments(post.id)
@@ -149,20 +160,6 @@ export const fetchPostDelete = (postId, history = null) => dispatch => (
         })
 )
 
-
-export const getCategoryPosts = (posts, path) => ({
-    type: GET_CATEGORY_POSTS,
-    posts,
-    path
-})
-
-export const fetchCategoryPosts = (categoryId, path) => dispatch => (
-    PostAPI.fetchCategoryPosts(categoryId)
-        .then((posts) => {
-            dispatch(getCategoryPosts(posts, path))
-        })
-)
-
 export const postVote = post => ({
     type: POST_VOTE,
     post
@@ -238,9 +235,8 @@ export const deleteComment = (commentId) => ({
 
 export const fetchCommentDelete = (commentId) => dispatch => (
     PostAPI
-        .deletePost(commentId)
+        .deleteComment(commentId)
         .then((post) => {
-        console.log(post)
             dispatch(deleteComment(commentId))
         })
 )

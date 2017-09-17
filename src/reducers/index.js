@@ -12,7 +12,6 @@ import {
     GET_ORDERED_POST_COMMENTS_BY,
     DELETE_POST,
     GET_COMMENTS,
-    GET_CATEGORY_POSTS,
     ADD_POST,
     EDIT_POST,
     GET_CATEGORIES,
@@ -31,9 +30,8 @@ function posts (state = {posts: [], sortBy: 'upVote', path: '/', rehydrated: fal
     const orderBy = state.sortBy
     switch (action.type) {
         case GET_POSTS:
-            return {...state, posts: sortRes(action.posts, orderBy)}
-        case GET_CATEGORY_POSTS:
-            return {...state,
+            return {
+                ...state,
                 posts: sortRes(action.posts, orderBy),
                 path: action.path
             }
@@ -43,7 +41,6 @@ function posts (state = {posts: [], sortBy: 'upVote', path: '/', rehydrated: fal
                 sortBy: action.sortBy
             }
         case ADD_POST:
-            console.log(action.post)
             return {...state,
                 posts: sortRes(state.posts.push(action.post), action.sortBy)
             }
@@ -104,10 +101,13 @@ function post (state =  { post: {}, comments: [], sortBy: 'upVote', rehydrated: 
     }
 }
 
-function comments (state = [], action) {
+function comments (state = { comments: [], rehydrated: false} , action, ) {
     switch (action.type) {
         case GET_COMMENTS:
-            return uniqBy(state.concat(action.comments), 'id')
+            return {
+                ...state,
+                comments: action.comments
+            }
         default:
             return state
     }

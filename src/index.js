@@ -15,7 +15,8 @@ const store = createStore(
     reducer,
     composeEnhancers(
         applyMiddleware(thunk),
-        autoRehydrate())
+        autoRehydrate()
+    )
 )
 
 persistStore(store)

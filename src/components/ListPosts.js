@@ -5,7 +5,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import {
     fetchPosts,
-    fetchCategoryPosts,
     votePosts,
     postsOrderedBy,
     fetchAllComments,
@@ -40,6 +39,10 @@ class ListPosts extends React.Component {
         this.setState({ isCommentModalOpen: true })
     }
 
+    editPost = (e, post) => {
+        this.setState({ isCommentModalOpen: true })
+    }
+
     handleDeletePost(postId) {
         this.props.fetchPostDelete(postId)
     }
@@ -69,18 +72,17 @@ class ListPosts extends React.Component {
 
 
     componentDidMount() {
-        let category = this.props.match.params.category
-        category ? this.props.fetchCategoryPosts(category, this.props.match.params.category) : this.props.fetchPosts()
-        this.props.fetchCategories()
-        this.props.fetchAllComments(this.props.posts)
+        const category = this.props.match.params.category
+        const path = category ? category : '/'
+        this.props.fetchPosts(path)
     }
 
 
     componentDidUpdate(prevProps, prevState) {
         if (!isEqual(this.props, prevProps)) {
             const category = this.props.match.params.category
-            category ? this.props.fetchCategoryPosts(category, this.props.match.params.category) : this.props.fetchPosts()
-            //this.props.fetchAllComments(this.props.posts)
+            const path = category ? category : '/'
+            this.props.fetchPosts(path)
         }
     }
 
@@ -117,13 +119,13 @@ class ListPosts extends React.Component {
                                     {post.title}
                                 </Link>
                             </h3>
-                            <PostInfo post={post} numComments={this.props.comments.filter((comment) => { return comment.parentId === post.id}).length} />
+                            <PostInfo post={post} numComments={post.comments} />
                             <hr />
                             <div className="col-md-4 col-sm-6">
                                 <VoteScoreBar voteObj={votePosts} obj={post} next="/"/>
                             </div>
                             <div className="col-md-6">
-                                <EditRemoveBar deleteObj={(postId) => this.handleDeletePost(post.id)} obj={post} next="/"/>
+                                <EditRemoveBar deleteObj={(postId) => this.handleDeletePost(post.id)} obj={post} editObj={(e, obj) => this.editPost(e, post)} next="/"/>
                             </div>
                             <div className="clearfix"></div>
                         </div>
@@ -170,7 +172,7 @@ class ListPosts extends React.Component {
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <select required
+                                        <select value={this.props.match.params.category} required
                                                className="form-control"
                                                id="post-category"
                                                ref="post-category"
@@ -211,15 +213,14 @@ const mapStateToProps = (state) => {
         posts: state.posts.posts,
         sortBy: state.posts.sortBy,
         path: state.posts.path,
-        comments: state.comments,
+        comments: state.comments.comments,
         categories: state.categories
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchPosts: () => dispatch(fetchPosts()),
-        fetchCategoryPosts: (categoryPath, path) => dispatch(fetchCategoryPosts(categoryPath, path)),
+        fetchPosts: (path) => dispatch(fetchPosts(path)),
         votePosts: (postId, strVote) => dispatch(votePosts(postId, strVote)),
         postsOrderedBy: (posts, sortBy) => dispatch(postsOrderedBy(posts, sortBy)),
         fetchAllComments: (posts) => dispatch(fetchAllComments(posts)),
