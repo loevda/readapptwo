@@ -29,7 +29,6 @@ class App extends Component {
                         <Route exact path="/page/not/found/" component={NotFound}/>
                         <Route path="*" component={NotFound} />
                     </Switch>
-
                 </div>
             </BrowserRouter>
         );
