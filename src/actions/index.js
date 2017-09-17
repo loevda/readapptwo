@@ -72,6 +72,7 @@ export const getPosts = (posts, path) => ({
 export const fetchPosts = (path) => dispatch => (
     PostAPI.fetchPosts(path)
         .then((posts) => {
+            //tip from Slack course forum
             const getPostsComments = posts.map(post => {
                 return PostAPI.fetchPostComments(post.id).then((data) => data)
             })
