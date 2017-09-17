@@ -20,6 +20,15 @@ export const ADD_COMMENT = 'ADD_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const COMMENT_VOTE = 'COMMENT_VOTE'
 export const DELETE_POST_FROM_LIST = 'DELETE_POST_FROM_LIST'
+export const CURRENT_EDITABLE_POST = 'CURRENT_EDITABLE_POST'
+export const CURRENT_EDITABLE_COMMENT = 'CURRENT_EDITABLE_COMMENT'
+
+export const currentEditablePost = post => (
+    {
+        type: CURRENT_EDITABLE_POST,
+        post
+    }
+)
 
 export const getCategories = categories => ({
     type: GET_CATEGORIES,
@@ -76,22 +85,6 @@ export const fetchPosts = (path) => dispatch => (
 export const getAllComments = (comments) => ({
     type: GET_COMMENTS,
         comments
-})
-
-
-export const fetchAllComments = (posts) => dispatch => {
-    posts.forEach ((post) => {
-        PostAPI
-            .fetchPostComments(post.id)
-            .then((comments) => {
-                dispatch(getAllComments(comments))
-            })
-    })
-}
-
-export const getComments = comments => ({
-    type: GET_COMMENTS,
-    comments
 })
 
 export const fetchComments = (postId) => dispatch => (
@@ -159,6 +152,22 @@ export const fetchPostDelete = (postId, history = null) => dispatch => (
             }
         })
 )
+
+export const editPost = (post) => ({
+    type: EDIT_POST,
+    post
+})
+
+export const fetchEditPost = (postId, post) => dispatch => (
+    PostAPI
+        .editPost(postId, post)
+        .then((newPost) => {
+        console.log(newPost)
+            dispatch(editPost(newPost))
+        })
+)
+
+
 
 export const postVote = post => ({
     type: POST_VOTE,

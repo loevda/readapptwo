@@ -49,13 +49,14 @@ export function deletePost (postId) {
         .then(res => res)
 }
 
-export function fetchCategoryPosts (categoryId) {
-    return fetch(`${api}/${categoryId}/posts`, { headers })
+export function editPost (postId, post) {
+    return fetch(`${api}/posts/${postId}`,
+        { headers: {...headers, 'Content-Type': 'application/json'},
+            method: 'PUT', body: JSON.stringify(post) })
         .then(res => res.json())
-        .then(data => data.filter((post) => {
-            return !post.deleted
-        }))
+        .then(data => data)
 }
+
 
 export function fetchCategories () {
     return fetch(`${api}/categories`, { headers })

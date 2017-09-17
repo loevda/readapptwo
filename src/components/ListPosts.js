@@ -7,10 +7,11 @@ import {
     fetchPosts,
     votePosts,
     postsOrderedBy,
-    fetchAllComments,
     fetchCategories,
     fetchPostDelete,
-    addPost
+    addPost,
+    currentEditablePost,
+    fetchEditPost
 } from '../actions'
 import { Link, withRouter } from 'react-router-dom'
 import PostInfo from './PostInfo'
@@ -33,6 +34,7 @@ class ListPosts extends React.Component {
 
     closeCommentModal = () => {
         this.setState({ isCommentModalOpen: false })
+        this.props.currentEditablePost(null)
     }
 
     newPost = (e) => {
@@ -40,6 +42,7 @@ class ListPosts extends React.Component {
     }
 
     editPost = (e, post) => {
+        this.props.currentEditablePost(post)
         this.setState({ isCommentModalOpen: true })
     }
 
@@ -59,13 +62,23 @@ class ListPosts extends React.Component {
         if (!simpleInputValidation(postObj)) {
             alert('Please fill all fields with a minimum of 5 characters.')
         }else{
-            const updatedPost = {
-                ...postObj,
-                id: generateUUID(),
-                timestamp: new Date().getTime()
+            if (this.props.editingPost) {
+                //edit post
+                const updPost = {
+                    title: postObj.title,
+                    body: postObj.body
+                }
+                this.setState({isCommentModalOpen: false})
+                this.props.fetchEditPost(this.props.editingPost.id, updPost)
+            } else {
+                const updatedPost = {
+                    ...postObj,
+                    id: generateUUID(),
+                    timestamp: new Date().getTime()
+                }
+                this.setState({isCommentModalOpen: false})
+                this.props.addPost(updatedPost)
             }
-            this.setState({isCommentModalOpen: false})
-            this.props.addPost(updatedPost)
         }
     }
 
@@ -93,7 +106,7 @@ class ListPosts extends React.Component {
 
     render() {
 
-        const { posts, votePosts, sortBy } = this.props
+        const { posts, votePosts, sortBy, editingPost } = this.props
 
         return (
             <div className="container">
@@ -150,16 +163,17 @@ class ListPosts extends React.Component {
                     <div className="content">
                         <div className="content-inner p20">
                             <div className="row">
-                                <h3>New post</h3>
+                                <h3>Post form</h3>
                                 <form>
 
                                     <div className="form-group">
-                                        <input type="text" required
+                                        <input type={editingPost ? 'hidden' : 'text'} required
                                                className="form-control"
                                                id="post-author"
                                                ref="post-author"
                                                name="post-author"
                                                placeholder="Your name"
+                                               value={editingPost ? editingPost.author : ''}
                                         />
                                     </div>
                                     <div className="form-group">
@@ -169,15 +183,17 @@ class ListPosts extends React.Component {
                                                ref="post-title"
                                                name="post-title"
                                                placeholder="Title"
+                                               defaultValue={editingPost ? editingPost.title : ''}
                                         />
                                     </div>
-                                    <div className="form-group">
-                                        <select value={this.props.match.params.category} required
+                                    <div className={editingPost ? 'form-group hidden' : 'form-group'}>
+                                        <select defaultValue={editingPost ? editingPost.category : this.props.match.params.category} required
                                                className="form-control"
                                                id="post-category"
                                                ref="post-category"
                                                name="post-category"
                                                placeholder="category"
+                                                disabled={editingPost ? 'disabled': ''}
                                         >
                                             {this.props.categories.map((category) => (
                                                 <option key={`id-cat-${category.name}`} value={category.path}>{category.name}</option>
@@ -190,7 +206,11 @@ class ListPosts extends React.Component {
                                                       className="form-control"
                                                       cols="40"
                                                       rows="8"
-                                                      id="category-text" name="category-text" placeholder="Write post">
+                                                      id="category-text"
+                                                      name="category-text"
+                                                      placeholder="Write post"
+                                            defaultValue={editingPost ? editingPost.body : ''}>
+
                                             </textarea>
                                     </div>
 
@@ -213,8 +233,8 @@ const mapStateToProps = (state) => {
         posts: state.posts.posts,
         sortBy: state.posts.sortBy,
         path: state.posts.path,
-        comments: state.comments.comments,
-        categories: state.categories
+        categories: state.categories,
+        editingPost: state.posts.editingPost
     }
 }
 
@@ -223,10 +243,11 @@ const mapDispatchToProps = (dispatch) => {
         fetchPosts: (path) => dispatch(fetchPosts(path)),
         votePosts: (postId, strVote) => dispatch(votePosts(postId, strVote)),
         postsOrderedBy: (posts, sortBy) => dispatch(postsOrderedBy(posts, sortBy)),
-        fetchAllComments: (posts) => dispatch(fetchAllComments(posts)),
         fetchCategories: () => dispatch(fetchCategories()),
         addPost: (post) => dispatch(addPost(post)),
-        fetchPostDelete: (postId) => dispatch(fetchPostDelete(postId))
+        fetchPostDelete: (postId) => dispatch(fetchPostDelete(postId)),
+        currentEditablePost: (post) => dispatch(currentEditablePost(post)),
+        fetchEditPost: (postId, post) => dispatch(fetchEditPost(postId, post))
     }
 }
 

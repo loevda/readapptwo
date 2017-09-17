@@ -2,8 +2,6 @@
  * Created by david2099 on 10/09/17.
  */
 import { combineReducers } from 'redux';
-import { uniqBy } from 'lodash'
-
 import {
     GET_POSTS,
     GET_POST,
@@ -21,12 +19,21 @@ import {
     ADD_COMMENT,
     DELETE_COMMENT,
     COMMENT_VOTE,
-    DELETE_POST_FROM_LIST
+    DELETE_POST_FROM_LIST,
+    CURRENT_EDITABLE_POST,
+    CURRENT_EDITABLE_COMMENT
 } from '../actions'
-
 import { sortRes } from '../utils/helpers'
 
-function posts (state = {posts: [], sortBy: 'upVote', path: '/', rehydrated: false}, action) {
+const initialPostsState = {
+    posts: [],
+    sortBy: 'upVote',
+    path: '/',
+    editingPost: null,
+    rehydrated: false
+}
+
+function posts (state = initialPostsState, action) {
     const orderBy = state.sortBy
     switch (action.type) {
         case GET_POSTS:
@@ -57,6 +64,10 @@ function posts (state = {posts: [], sortBy: 'upVote', path: '/', rehydrated: fal
                     return post.id !== action.postId
                 }), orderBy)
             }
+        case CURRENT_EDITABLE_POST:
+            return {...state, editingPost: action.post}
+        case EDIT_POST:
+            return {...state, editingPost: null}
         default :
             return state
     }
@@ -101,18 +112,6 @@ function post (state =  { post: {}, comments: [], sortBy: 'upVote', rehydrated: 
     }
 }
 
-function comments (state = { comments: [], rehydrated: false} , action, ) {
-    switch (action.type) {
-        case GET_COMMENTS:
-            return {
-                ...state,
-                comments: action.comments
-            }
-        default:
-            return state
-    }
-}
-
 function categories(state = [], action) {
     switch (action.type) {
         case GET_CATEGORIES:
@@ -125,6 +124,5 @@ function categories(state = [], action) {
 export default combineReducers({
     posts,
     post,
-    comments,
     categories
 });

@@ -2,10 +2,7 @@
  * Created by david2099 on 12/09/17.
  */
 import React from 'react'
-import { connect } from 'react-redux'
-import { fetchPostComments } from '../actions'
 import { capitalize, formatDate } from '../utils/helpers'
-import { withRouter } from 'react-router-dom'
 
 class PostInfo extends React.Component {
 
