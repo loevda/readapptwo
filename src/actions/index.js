@@ -43,7 +43,6 @@ export const getCategories = categories => ({
     categories
 })
 
-
 export const fetchCategories = () => dispatch => (
     PostAPI.fetchCategories()
         .then((categories) => {
@@ -63,7 +62,6 @@ export const addPost= (post) => dispatch => (
             dispatch(postAdd(post))
         })
 )
-
 
 export const getPosts = (posts, path) => ({
     type: GET_POSTS,
@@ -89,7 +87,6 @@ export const fetchPosts = (path) => dispatch => (
             dispatch(getPosts(posts, path))
     })
 )
-
 
 export const getPost = post => ({
     type: GET_POST,
@@ -125,7 +122,6 @@ export const fetchPostComments = (postId) => dispatch => (
             dispatch(getPostComments(comments))
         })
 )
-
 
 export const deletePost = () => ({
     type: DELETE_POST
@@ -174,8 +170,6 @@ export const fetchEditPostView = (postId, post) => dispatch => (
             dispatch(editPostView(newPost))
         })
 )
-
-
 
 export const postVote = post => ({
     type: POST_VOTE,
@@ -234,14 +228,14 @@ export const voteComment = (commentId, voteStr) => dispatch => (
         })
 )
 
-export const commentAdd = comment => ({
+export const addComment = comment => ({
     type: ADD_COMMENT,
     comment
 })
 
-export const addComment = (comment) => dispatch => (
-    PostAPI.addComment(comment).then((comment) => {
-        dispatch(commentAdd(comment))
+export const fetchAddComment = (comment) => dispatch => (
+    PostAPI.fetchAddComment(comment).then((comment) => {
+        dispatch(addComment(comment))
     })
 )
 
@@ -250,16 +244,13 @@ export const deleteComment = (commentId) => ({
     commentId
 })
 
-export const fetchCommentDelete = (commentId) => dispatch => (
+export const fetchDeleteComment = (commentId) => dispatch => (
     PostAPI
-        .deleteComment(commentId)
+        .fetchDeleteComment(commentId)
         .then((post) => {
             dispatch(deleteComment(commentId))
         })
 )
-
-
-
 
 export const editComment = (comment) => ({
     type: EDIT_COMMENT,
@@ -268,7 +259,7 @@ export const editComment = (comment) => ({
 
 export const fetchEditComment = (commentId, comment) => dispatch => (
     PostAPI
-        .editComment(commentId, comment)
+        .fetchEditComment(commentId, comment)
         .then((newComment) => {
             dispatch(editComment(newComment))
         })

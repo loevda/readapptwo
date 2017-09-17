@@ -81,7 +81,7 @@ export function voteComment (commentId, voteStr) {
         .then(data => data)
 }
 
-export function addComment (comment) {
+export function fetchAddComment (comment) {
     return fetch(`${api}/comments`,
         { headers: {...headers, 'Content-Type': 'application/json'},
             method: 'POST', body: JSON.stringify(comment) })
@@ -89,13 +89,13 @@ export function addComment (comment) {
         .then(data => data)
 }
 
-export function deleteComment (commentId) {
+export function fetchDeleteComment (commentId) {
     return fetch(`${api}/comments/${commentId}`,
         { headers: {...headers, 'Content-Type': 'application/json'}, method: 'DELETE' })
         .then(res => res)
 }
 
-export function editComment (commentId, comment) {
+export function fetchEditComment (commentId, comment) {
     return fetch(`${api}/comments/${commentId}`,
         { headers: {...headers, 'Content-Type': 'application/json'},
             method: 'PUT', body: JSON.stringify(comment) })

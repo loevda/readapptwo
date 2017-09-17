@@ -25,7 +25,6 @@ import {
     CURRENT_EDITABLE_COMMENT
 } from '../actions'
 import { sortRes } from '../utils/helpers'
-import { uniqBy } from 'lodash'
 
 const initialPostsState = {
     posts: [],
@@ -36,12 +35,11 @@ const initialPostsState = {
 }
 
 function posts (state = initialPostsState, action) {
-    const orderBy = state.sortBy
     switch (action.type) {
         case GET_POSTS:
             return {
                 ...state,
-                posts: sortRes(action.posts, orderBy),
+                posts: sortRes(action.posts, state.sortBy),
                 path: action.path
             }
         case GET_ORDERED_POSTS_BY:
@@ -57,14 +55,14 @@ function posts (state = initialPostsState, action) {
             return {...state,
                 posts: sortRes(state.posts.filter((post) => {
                     return post.id !== action.post.id
-                }).concat(action.post), orderBy)
+                }).concat(action.post), state.sortBy)
             }
         case DELETE_POST_FROM_LIST:
             return {
                 ...state,
                 posts: sortRes(state.posts.filter((post) => {
                     return post.id !== action.postId
-                }), orderBy)
+                }), state.sortBy)
             }
         case CURRENT_EDITABLE_POST:
             return {...state, editingPost: action.post}

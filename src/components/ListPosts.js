@@ -33,12 +33,12 @@ class ListPosts extends React.Component {
     }
 
     closePostModal = () => {
-        this.setState({ isCommentModalOpen: false })
+        this.setState({ isPostModalOpen: false })
         this.props.currentEditablePost(null)
     }
 
     newPost = (e) => {
-        this.setState({ isCommentModalOpen: true })
+        this.setState({ isPostModalOpen: true })
     }
 
     editPost = (e, post) => {
@@ -92,6 +92,8 @@ class ListPosts extends React.Component {
 
 
     componentDidUpdate(prevProps, prevState) {
+        //tried every hacks possible that I found on the Internet
+        // the only one that works is from here: https://goo.gl/cxiYcS
         if (!isEqual(this.props, prevProps)) {
             const category = this.props.match.params.category
             const path = category ? category : '/'
@@ -173,7 +175,7 @@ class ListPosts extends React.Component {
                                                ref="post-author"
                                                name="post-author"
                                                placeholder="Your name"
-                                               value={editingPost ? editingPost.author : ''}
+                                               defaultValue={editingPost ? editingPost.author : ''}
                                         />
                                     </div>
                                     <div className="form-group">

@@ -11,8 +11,8 @@ import {
     fetchPostDelete,
     fetchEditPostView,
     voteComment,
-    addComment,
-    fetchCommentDelete,
+    fetchAddComment,
+    fetchDeleteComment,
     fetchEditComment,
     currentEditableComment
 } from '../actions'
@@ -20,7 +20,6 @@ import VoteScoreBar from './VoteScoreBar'
 import EditRemoveBar from './EditRemoveBar'
 import OrderSelect from './OrderSelect'
 import PostInfo from './PostInfo'
-import Comment from './Comment'
 import {
     capitalize,
     formatDate,
@@ -106,7 +105,7 @@ class Post extends React.Component {
     }
 
     handleDeleteComment(commentId) {
-        this.props.fetchCommentDelete(commentId)
+        this.props.fetchDeleteComment(commentId)
     }
 
 
@@ -134,7 +133,7 @@ class Post extends React.Component {
                     parentDeleted: false
                 }
 
-                this.props.addComment(updatedComment)
+                this.props.fetchAddComment(updatedComment)
             }
             this.setState({isCommentModalOpen: false})
         }
@@ -331,8 +330,8 @@ const mapDispatchToProps = (dispatch) => {
         fetchPostDelete: (postId, history) => dispatch(fetchPostDelete(postId, history)),
         orderPostCommentsBy: (comments, sortBy) => dispatch(orderPostCommentsBy(comments, sortBy)),
         voteComment: (commentId, voteStr) => dispatch(voteComment(commentId, voteStr)),
-        addComment: (comment) => dispatch(addComment(comment)),
-        fetchCommentDelete: (commentId) => dispatch(fetchCommentDelete(commentId)),
+        fetchAddComment: (comment) => dispatch(fetchAddComment(comment)),
+        fetchDeleteComment: (commentId) => dispatch(fetchDeleteComment(commentId)),
         currentEditableComment: (comment) => dispatch(currentEditableComment(comment)),
         fetchEditPostView: (postId, post) => dispatch(fetchEditPostView(postId, post)),
         fetchEditComment: (commentId, comment) => dispatch(fetchEditComment(commentId, comment))
