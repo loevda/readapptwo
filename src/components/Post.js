@@ -6,11 +6,11 @@ import { connect } from 'react-redux'
 import {
     fetchPost,
     fetchPostComments,
-    votePost,
+    fetchVotePost,
     orderPostCommentsBy,
     fetchPostDelete,
     fetchEditPostView,
-    voteComment,
+    fetchVoteComment,
     fetchAddComment,
     fetchDeleteComment,
     fetchEditComment,
@@ -140,7 +140,7 @@ class Post extends React.Component {
     }
 
     render() {
-        const { post, comments, votePost, sortBy, voteComment, editingComment } = this.props
+        const { post, comments, fetchVotePost, sortBy, fetchVoteComment, editingComment } = this.props
 
         return (
 
@@ -153,7 +153,7 @@ class Post extends React.Component {
                 <hr />
                 <div className="col-md-12 mb20">
                     <div className="col-md-6">
-                        <VoteScoreBar voteObj={votePost} obj={post} />
+                        <VoteScoreBar voteObj={fetchVotePost} obj={post} />
                     </div>
                     <div className="col-md-6">
                         <EditRemoveBar
@@ -290,7 +290,7 @@ class Post extends React.Component {
                                 <p className="body-content comment">{comment.body}</p>
                                 <div className="col-md-12">
                                     <div className="col-md-4 col-sm-8 col-xs-12">
-                                        <VoteScoreBar voteObj={voteComment} obj={comment} />
+                                        <VoteScoreBar voteObj={fetchVoteComment} obj={comment} />
                                     </div>
                                     <div className="col-md-4 col-sm-8 col-xs-12">
                                         <EditRemoveBar
@@ -326,10 +326,10 @@ const mapDispatchToProps = (dispatch) => {
     return {
         fetchPost: (postId, history) => dispatch(fetchPost(postId, history)),
         fetchPostComments: (postId) => dispatch(fetchPostComments(postId)),
-        votePost: (postId, strVote) => dispatch(votePost(postId, strVote)),
+        fetchVotePost: (postId, strVote) => dispatch(fetchVotePost(postId, strVote)),
         fetchPostDelete: (postId, history) => dispatch(fetchPostDelete(postId, history)),
         orderPostCommentsBy: (comments, sortBy) => dispatch(orderPostCommentsBy(comments, sortBy)),
-        voteComment: (commentId, voteStr) => dispatch(voteComment(commentId, voteStr)),
+        fetchVoteComment: (commentId, voteStr) => dispatch(fetchVoteComment(commentId, voteStr)),
         fetchAddComment: (comment) => dispatch(fetchAddComment(comment)),
         fetchDeleteComment: (commentId) => dispatch(fetchDeleteComment(commentId)),
         currentEditableComment: (comment) => dispatch(currentEditableComment(comment)),

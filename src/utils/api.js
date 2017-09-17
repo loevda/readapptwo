@@ -12,7 +12,7 @@ const headers = {
     'Authorization': token
 }
 
-export function addPost (post) {
+export function fetchAddPost (post) {
     return fetch(`${api}/posts`,
         { headers: {...headers, 'Content-Type': 'application/json'},
             method: 'POST', body: JSON.stringify(post) })
@@ -43,13 +43,13 @@ export function fetchPosts (path) {
         }))
 }
 
-export function deletePost (postId) {
+export function fetchPostDelete (postId) {
     return fetch(`${api}/posts/${postId}`,
         { headers: {...headers, 'Content-Type': 'application/json'}, method: 'DELETE' })
         .then(res => res)
 }
 
-export function editPost (postId, post) {
+export function fetchEditPost (postId, post) {
     return fetch(`${api}/posts/${postId}`,
         { headers: {...headers, 'Content-Type': 'application/json'},
             method: 'PUT', body: JSON.stringify(post) })
@@ -64,7 +64,7 @@ export function fetchCategories () {
         .then(data => data.categories)
 }
 
-export function votePost (postId, voteStr) {
+export function fetchVotePost (postId, voteStr) {
     return fetch(`${api}/posts/${postId}`,
         { headers: {...headers, 'Content-Type': 'application/json'},
             method: 'POST', body: JSON.stringify({option: voteStr}) })
@@ -73,7 +73,7 @@ export function votePost (postId, voteStr) {
 }
 
 
-export function voteComment (commentId, voteStr) {
+export function fetchVoteComment (commentId, voteStr) {
     return fetch(`${api}/comments/${commentId}`,
         { headers: {...headers, 'Content-Type': 'application/json'},
             method: 'POST', body: JSON.stringify({option: voteStr}) })

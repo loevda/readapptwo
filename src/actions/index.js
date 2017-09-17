@@ -50,16 +50,16 @@ export const fetchCategories = () => dispatch => (
         })
 )
 
-export const postAdd = (post) => ({
+export const addPost = (post) => ({
         type: ADD_POST,
         post
     }
 )
 
-export const addPost= (post) => dispatch => (
-    PostAPI.addPost(post)
+export const fetchAddPost = (post) => dispatch => (
+    PostAPI.fetchAddPost(post)
         .then((post) => {
-            dispatch(postAdd(post))
+            dispatch(addPost(post))
         })
 )
 
@@ -134,7 +134,7 @@ export const deletePostFromList = (postId) => ({
 
 export const fetchPostDelete = (postId, history = null) => dispatch => (
     PostAPI
-        .deletePost(postId)
+        .fetchPostDelete(postId)
         .then((post) => {
             if(history) {
                 history.push('/')
@@ -152,7 +152,7 @@ export const editPost = (post) => ({
 
 export const fetchEditPost = (postId, post) => dispatch => (
     PostAPI
-        .editPost(postId, post)
+        .fetchEditPost(postId, post)
         .then((newPost) => {
             dispatch(editPost(newPost))
         })
@@ -165,33 +165,33 @@ export const editPostView = (post) => ({
 
 export const fetchEditPostView = (postId, post) => dispatch => (
     PostAPI
-        .editPost(postId, post)
+        .fetchEditPost(postId, post)
         .then((newPost) => {
             dispatch(editPostView(newPost))
         })
 )
 
-export const postVote = post => ({
+export const votePost = post => ({
     type: POST_VOTE,
     post
 })
 
-export const votePost = (postId, voteStr) => dispatch => (
-    PostAPI.votePost(postId, voteStr)
+export const fetchVotePost = (postId, voteStr) => dispatch => (
+    PostAPI.fetchVotePost(postId, voteStr)
         .then((post) => {
-            dispatch(postVote(post))
+            dispatch(votePost(post))
         })
 )
 
-export const postsVote = post => ({
+export const votePosts = post => ({
     type: POSTS_VOTE,
     post
 })
 
-export const votePosts = (postId, voteStr) => dispatch => (
-    PostAPI.votePost(postId, voteStr)
+export const fetchVotePosts = (postId, voteStr) => dispatch => (
+    PostAPI.fetchVotePost(postId, voteStr)
         .then((post) => {
-            dispatch(postsVote(post))
+            dispatch(votePosts(post))
         })
 )
 
@@ -221,8 +221,8 @@ export const commentVote = comment => ({
     comment
 })
 
-export const voteComment = (commentId, voteStr) => dispatch => (
-    PostAPI.voteComment(commentId, voteStr)
+export const fetchVoteComment = (commentId, voteStr) => dispatch => (
+    PostAPI.fetchVoteComment(commentId, voteStr)
         .then((comment) => {
             dispatch(commentVote(comment))
         })

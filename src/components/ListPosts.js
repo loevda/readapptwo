@@ -5,11 +5,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import {
     fetchPosts,
-    votePosts,
+    fetchVotePosts,
     postsOrderedBy,
     fetchCategories,
     fetchPostDelete,
-    addPost,
+    fetchAddPost,
     currentEditablePost,
     fetchEditPost
 } from '../actions'
@@ -77,7 +77,7 @@ class ListPosts extends React.Component {
                     timestamp: new Date().getTime()
                 }
                 this.setState({isPostModalOpen: false})
-                this.props.addPost(updatedPost)
+                this.props.fetchAddPost(updatedPost)
             }
         }
     }
@@ -108,7 +108,7 @@ class ListPosts extends React.Component {
 
     render() {
 
-        const { posts, votePosts, sortBy, editingPost } = this.props
+        const { posts, fetchVotePosts, sortBy, editingPost } = this.props
 
         return (
             <div className="container">
@@ -137,7 +137,7 @@ class ListPosts extends React.Component {
                             <PostInfo post={post} numComments={post.comments} />
                             <hr />
                             <div className="col-md-4 col-sm-6">
-                                <VoteScoreBar voteObj={votePosts} obj={post} next="/"/>
+                                <VoteScoreBar voteObj={fetchVotePosts} obj={post} next="/"/>
                             </div>
                             <div className="col-md-6">
                                 <EditRemoveBar deleteObj={(postId) => this.handleDeletePost(post.id)} obj={post} editObj={(e, obj) => this.editPost(e, post)} next="/"/>
@@ -243,10 +243,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         fetchPosts: (path) => dispatch(fetchPosts(path)),
-        votePosts: (postId, strVote) => dispatch(votePosts(postId, strVote)),
+        fetchVotePosts: (postId, strVote) => dispatch(fetchVotePosts(postId, strVote)),
         postsOrderedBy: (posts, sortBy) => dispatch(postsOrderedBy(posts, sortBy)),
         fetchCategories: () => dispatch(fetchCategories()),
-        addPost: (post) => dispatch(addPost(post)),
+        fetchAddPost: (post) => dispatch(fetchAddPost(post)),
         fetchPostDelete: (postId) => dispatch(fetchPostDelete(postId)),
         currentEditablePost: (post) => dispatch(currentEditablePost(post)),
         fetchEditPost: (postId, post) => dispatch(fetchEditPost(postId, post))
