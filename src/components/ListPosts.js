@@ -32,6 +32,22 @@ class ListPosts extends React.Component {
         isPostModalOpen: false
     }
 
+    componentDidMount() {
+        const category = this.props.match.params.category
+        const path = category ? category : '/'
+        this.props.fetchPosts(path)
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        //tried every hacks possible that I found on the Internet
+        // the only one that works is from here: https://goo.gl/cxiYcS
+        if (!isEqual(this.props, prevProps)) {
+            const category = this.props.match.params.category
+            const path = category ? category : '/'
+            this.props.fetchPosts(path)
+        }
+    }
+
     closePostModal = () => {
         this.setState({ isPostModalOpen: false })
         this.props.currentEditablePost(null)
@@ -50,7 +66,7 @@ class ListPosts extends React.Component {
         this.props.fetchPostDelete(postId)
     }
 
-    submtiPost (e) {
+    submitPost (e) {
         e.preventDefault()
         const postObj = {
             author: this.refs['post-author'].value,
@@ -82,29 +98,9 @@ class ListPosts extends React.Component {
         }
     }
 
-
-
-    componentDidMount() {
-        const category = this.props.match.params.category
-        const path = category ? category : '/'
-        this.props.fetchPosts(path)
-    }
-
-
-    componentDidUpdate(prevProps, prevState) {
-        //tried every hacks possible that I found on the Internet
-        // the only one that works is from here: https://goo.gl/cxiYcS
-        if (!isEqual(this.props, prevProps)) {
-            const category = this.props.match.params.category
-            const path = category ? category : '/'
-            this.props.fetchPosts(path)
-        }
-    }
-
     handleSorting(e) {
         this.props.postsOrderedBy(this.props.posts, e.target.value)
     }
-
 
     render() {
 
@@ -217,7 +213,7 @@ class ListPosts extends React.Component {
                                     </div>
 
                                     <button
-                                        onClick={(e) => this.submtiPost(e)}
+                                        onClick={(e) => this.submitPost(e)}
                                         type="submit" className="btn btn-default">Submit</button>
                                 </form>
                             </div>
